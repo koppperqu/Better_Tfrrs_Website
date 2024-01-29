@@ -1,0 +1,79 @@
+package DBTables;
+
+import DB.DB;
+import DBObjects.Team;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TeamsTable {
+    private Connection connection = null;
+
+    public TeamsTable(DB db) {
+        this.connection = db.connection;
+    }
+    public void tryInsertTeams(List<Team> teamsNoIDS, int conference_id) throws SQLException {
+        for (Team teamTryInsert : teamsNoIDS){
+            List<Team> specificTeams = getTeamsWithTeamName(teamTryInsert.name);
+            boolean teamExists = false;
+            for (Team team :specificTeams){
+                if (team.isMensTeam == teamTryInsert.isMensTeam) {
+                    teamExists = true;
+                    break;
+                }
+            }
+            if (!teamExists){
+                insertTeam(teamTryInsert, conference_id);
+            }
+        }
+    }
+
+    private void insertTeam(Team team, int conference_id) throws SQLException {
+        //String sql = "INSERT INTO track.teams (name,link,is_Mens_Team,conference_id) VALUES (\"" + team.name + "\",\""+ team.link + "\",\"" + team.isMensTeam + "\"," + conference_id + ")";
+        String sql = "INSERT INTO TEAMS (name, link, conference_id, is_mens_team) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, team.name);
+            stmt.setString(2, team.link);
+            stmt.setInt(3, conference_id);
+            stmt.setInt(4, team.isMensTeam ? 1 : 0); // Convert boolean to 0 or 1
+            stmt.executeUpdate();
+        }
+    }
+    public List<Team> getTeams() throws SQLException {
+        Statement stmt = connection.createStatement();
+        String sql = "SELECT * FROM TEAMS";
+        ResultSet rs = stmt.executeQuery(sql);
+        return resultSetToTeamList(rs);
+    }
+    public List<Team> getTeamsWithTeamName(String teamName) throws SQLException {
+        Statement stmt = connection.createStatement();
+        String sql = "SELECT * FROM TRACK.TEAMS WHERE NAME = \"" + teamName + "\"";
+        ResultSet rs = stmt.executeQuery(sql);
+        return resultSetToTeamList(rs);
+    }
+
+    public List<Team> getTeamsWithTeamNameAndIsMensTeam(String teamName, boolean isMensTeam) throws SQLException {
+        Statement stmt = connection.createStatement();
+        //SELECT * FROM TEAMS WHERE TEAMS.NAME = 'Wis.-La Crosse' AND TEAMS.IS_MENS_TEAM = TRUE
+        String sql = "SELECT * FROM TRACK.TEAMS WHERE NAME = \"" + teamName + "\" AND IS_MENS_TEAM = " + isMensTeam;
+        ResultSet rs = stmt.executeQuery(sql);
+        return resultSetToTeamList(rs);
+    }
+
+    private List<Team> resultSetToTeamList (ResultSet rs) throws SQLException {
+        List<Team> teams = new ArrayList<>();
+        while (rs.next()) {
+            // Assuming DBObjects.Team class has a constructor that takes relevant fields
+            Team team = new Team(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("link"),
+                    rs.getInt("conference_id"),
+                    rs.getBoolean("is_Mens_Team")
+            );
+            teams.add(team);
+        }
+        return teams;
+    }
+}

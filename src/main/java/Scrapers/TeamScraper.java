@@ -1,0 +1,85 @@
+package Scrapers;
+
+import DBObjects.Team;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
+import java.util.List;
+
+//This class is used to scrape the teams off of a conference page.
+//It does all the processing upon creation of the class, if pivoting to do all conferences
+//consider changing it to having a method to call to do the processing and it can then change the
+//html passed in (the document)
+//It will assemble parallel lists of teamNames and teamLinks, if a team
+//name or team link is empty then it will skip that team.
+public class TeamScraper{
+    public Document conferenceDoc;
+    public List<String> teamNames;
+    public List<String> teamLinks;
+    public List<Boolean> isMensTeamBools;
+
+    //The main entry to the scraper, it gets passes the doc/thing it is scraping then
+    //it does the processing. This is how the other scrapers will be modeled to allow
+    //passing in of various different pages, teams, athletes etc.
+    public List<Team> scrapeConferencePage(Document doc) {
+        conferenceDoc = doc;
+        Element teamsDiv = findTeamsDiv(conferenceDoc);
+        Element teamsTable = findTeamsTable(teamsDiv);
+        extractTeamNamesAndLinks(teamsTable);
+        return assembleDataIntoListOfTeams();
+    }
+
+    private List<Team> assembleDataIntoListOfTeams() {
+        List<Team> teams = new ArrayList<>();
+        for (int i = 0; i < teamNames.size(); i++){
+            // Assuming DBObjects.Team class has a constructor that takes relevant fields
+            Team team = new Team(
+                    0,
+                    teamNames.get(i),
+                    teamLinks.get(i),
+                    0,
+                    isMensTeamBools.get(i)
+            );
+            teams.add(team);
+        }
+        return teams;
+    }
+
+    private void extractTeamNamesAndLinks(Element teamsTable) {
+        List<String> listOfTeamNames  = new ArrayList<>();
+        List<String> listOfTeamLinks  = new ArrayList<>();
+        List<Boolean> listOfIsMensTeamBools = new ArrayList<>();
+        Element tableBody = teamsTable.getElementsByTag("tbody").first();
+        Elements links = tableBody.getElementsByTag("a");
+        //String linkHref = link.attr("href"); // "http://example.com/"
+        //String linkText = link.text(); // "example""
+        for (int i = 0; i<links.size(); i++){
+            Element link = links.get(i);
+            String tempTeamName = link.text();
+            String tempTeamLink = link.attr("href");
+            //0 = mens team, 1 = womens team;
+            Boolean isMensTeam = (i % 2 == 0);
+            if (!tempTeamName.isEmpty() && !tempTeamLink.isEmpty()){
+                listOfTeamNames.add(tempTeamName);
+                listOfTeamLinks.add(tempTeamLink);
+                listOfIsMensTeamBools.add(isMensTeam);
+            }
+        }
+        teamNames = listOfTeamNames;
+        teamLinks = listOfTeamLinks;
+        isMensTeamBools = listOfIsMensTeamBools;
+    }
+
+    private Element findTeamsTable(Element teamsDiv) {
+        return teamsDiv.selectFirst("table");
+    }
+
+    private Element findTeamsDiv(Document doc){
+        //tableData=soup.find("h3", string="TEAMS").parent.find("table").findAll("a")
+        String findTeamsDivString = "h3:containsOwn(TEAMS)";
+        Element teamsH3 = doc.selectFirst(findTeamsDivString);
+        return teamsH3.parent();
+    }
+}
