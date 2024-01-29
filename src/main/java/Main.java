@@ -1,14 +1,7 @@
 import DB.DB;
-import DBObjects.Athlete;
-import DBObjects.Best;
-import DBObjects.Team;
-import DBTables.AthleteTable;
-import DBTables.BestsTable;
-import DBTables.EventsTable;
-import DBTables.TeamsTable;
-import Scrapers.AthleteScraper;
-import Scrapers.BestsScraper;
-import Scrapers.TeamScraper;
+import DBObjects.*;
+import DBTables.*;
+import Scrapers.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
