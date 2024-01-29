@@ -16,9 +16,14 @@ repositories {
 }
 
 dependencies {
+	// jsoup HTML parser library @ https://jsoup.org/
+	implementation ("org.jsoup:jsoup:1.17.2")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// Add the Spring Boot Starter Thymeleaf dependency
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
 }
 
 tasks.withType<Test> {
