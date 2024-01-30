@@ -1,13 +1,12 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="text-center">
-    <h2 class="col-12 display-4 custom-header p-2 rounded-top">WIAC Colleges</h2>
-    <div class="row justify-content-center">
-        {%for each in data%}
-        <div class="col-4 col-md-3 p-1 m-1">
-            <a class = "btn custom-btn w-100 h-100" href="{% url 'college' college_slug=each.slug%}">{{ each.name }}</a>
-        </div>
-        {% endfor %}
-    </div>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="base">
+<body>
+<div layout:fragment="content">
+    <!--Content of the page-->
+    <h3>page injected in another page</h3>
 </div>
-{% endblock %}
+</body>
+</html>
+
