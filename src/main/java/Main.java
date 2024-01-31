@@ -14,7 +14,7 @@ import java.util.List;
 public class Main {
     //static boolean firstTime = true;
     //Set to false for testing
-    static boolean firstTime = false;
+    static boolean firstTime = true;
     static DB db = null;
     static AthleteTable athleteTable = null;
     static BestsTable bestsTable = null;
@@ -54,8 +54,8 @@ public class Main {
             /* Commented out for now as it will just run everytime i start to debug.
             //Check athlete for bests every night at midnight.
             checkAthletesBests();
-            //Check conference and team data at the end of every week at midnight(sunday midnight?)
-            //future maybe all teams in each conference for now it just checks wiac
+            //Check team data at the end of every week at midnight(sunday midnight?)
+            //future maybe all teams in each conference for now it just checks wiac only needs to be checked on first time
             checkConferences();
             //Get all teams and their athletes
             checkTeams();

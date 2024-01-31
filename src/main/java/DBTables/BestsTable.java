@@ -26,7 +26,7 @@ public class BestsTable {
 
     private List<Best> getBestsWithBestAthleteIDAndEventID(int eventId, int athleteId) throws SQLException {
         Statement stmt = connection.createStatement();
-        String sql = "SELECT * FROM BESTS WHERE ATHLETE_ID = " + eventId + " AND ATHLETE_ID = " + athleteId;
+        String sql = "SELECT * FROM BESTS WHERE EVENT_ID = " + eventId + " AND ATHLETE_ID = " + athleteId;
         ResultSet rs = stmt.executeQuery(sql);
         return resultSetToBestList(rs);
     }

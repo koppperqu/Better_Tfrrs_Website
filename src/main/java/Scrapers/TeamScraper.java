@@ -34,7 +34,6 @@ public class TeamScraper{
     private List<Team> assembleDataIntoListOfTeams() {
         List<Team> teams = new ArrayList<>();
         for (int i = 0; i < teamNames.size(); i++){
-            // Assuming DBObjects.Team class has a constructor that takes relevant fields
             Team team = new Team(
                     0,
                     teamNames.get(i),
@@ -58,6 +57,9 @@ public class TeamScraper{
         for (int i = 0; i<links.size(); i++){
             Element link = links.get(i);
             String tempTeamName = link.text();
+            if (tempTeamName.startsWith("Wis.-")) {
+                tempTeamName = tempTeamName.substring("WIS.-".length());
+            }
             String tempTeamLink = link.attr("href");
             //0 = mens team, 1 = womens team;
             Boolean isMensTeam = (i % 2 == 0);
