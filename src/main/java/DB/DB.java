@@ -6,7 +6,11 @@ import java.sql.SQLException;
 
 public class DB {
     public Connection connection;
-    public DB(String url, String user, String password) {
+
+    final static String url = "jdbc:mysql://localhost:3306/track";
+    final static String user = System.getenv("dbuser");
+    final static String password = System.getenv("dbpass");
+    public DB() {
 
         try {
             connection = DriverManager.getConnection(url, user, password);

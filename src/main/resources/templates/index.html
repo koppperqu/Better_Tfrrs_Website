@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="base">
+      layout:decorate="base"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 <div layout:fragment="content">
-    <!--Content of the page-->
-    <h3>page injected in another page</h3>
+    <div class="text-center">
+        <h2 class="col-12 display-4 custom-header p-2 rounded-top">WIAC Colleges</h2>
+        <div class="row justify-content-center">
+            <div class="indexTeamDiv rounded col-4 col-md-3 m-1 p-0" th:each="teamDTO : ${globalLinks}">
+                <h3 class = "indexTeamHeader rounded-top p-1 w-100" th:text="${teamDTO.name}"></h3>
+                <div class="p-1 m-1"><a class = "btn indexTeamLink w-75" th:href="${teamDTO.mensLink}">Men</a></div>
+                <div class="p-1 m-1"><a class = "btn indexTeamLink w-75" th:href="${teamDTO.womensLink}">Women</a></div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

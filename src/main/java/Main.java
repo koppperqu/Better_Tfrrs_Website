@@ -14,7 +14,7 @@ import java.util.List;
 public class Main {
     //static boolean firstTime = true;
     //Set to false for testing
-    static boolean firstTime = true;
+    static boolean firstTime = false;
     static DB db = null;
     static AthleteTable athleteTable = null;
     static BestsTable bestsTable = null;
@@ -34,7 +34,7 @@ public class Main {
         try {
             //Init db and tables
             // JDBC URL, username, and password of MySQL server
-            db = new DB(url,user,password);
+            db = new DB();
             athleteTable = new AthleteTable(db);
             bestsTable = new BestsTable(db);
             eventsTable = new EventsTable(db);

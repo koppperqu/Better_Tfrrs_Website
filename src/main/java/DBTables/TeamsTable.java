@@ -13,6 +13,16 @@ public class TeamsTable {
     public TeamsTable(DB db) {
         this.connection = db.connection;
     }
+
+    public List<Team> safeGetTeamsWithName(String teamName) throws SQLException {
+        //select * from teams where name = "Eau Claire"
+        String sql = "SELECT * FROM TEAMS WHERE NAME = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, teamName);
+        ResultSet rs = stmt.executeQuery();
+        return resultSetToTeamList(rs);
+    }
+
     public void tryInsertTeams(List<Team> teamsNoIDS, int conference_id) throws SQLException {
         for (Team teamTryInsert : teamsNoIDS){
             List<Team> specificTeams = getTeamsWithTeamName(teamTryInsert.name);
