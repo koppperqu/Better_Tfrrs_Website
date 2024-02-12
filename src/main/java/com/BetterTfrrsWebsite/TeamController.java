@@ -21,6 +21,15 @@ public class TeamController {
     public String teamTest(@PathVariable String teamName,
                         Model model) throws SQLException {
         List<Team> teamsList = teamsTable.safeGetTeamsWithName(teamName);
+        String teamNameString;
+        if (teamsList.size() > 1) {
+           teamNameString = teamsList.get(0).name;
+        }
+        else {
+            teamNameString = "Not Found";
+        }
+        model.addAttribute("teamNameString", teamNameString);
+        model.addAttribute("teamsLinks", teamsList);
         return "teamPage";
     }
 }
