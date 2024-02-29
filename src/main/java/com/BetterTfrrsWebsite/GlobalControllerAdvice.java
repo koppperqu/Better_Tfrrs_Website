@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +18,13 @@ public class GlobalControllerAdvice {
     DB db = new DB();
     TeamsTable teamsTable = new TeamsTable(db);
     @ModelAttribute("globalLinks")
-    public List<TeamDTO> globalLinks(Model model) throws SQLException {
+    public List<TeamDTO> globalLinks(Model model) throws SQLException, UnsupportedEncodingException {
         List<Team> teamsList = teamsTable.getTeams();
         List<TeamDTO> teamsDTOList = new ArrayList<>();
-        TeamDTO tempTeamDTO = new TeamDTO(null);
+        TeamDTO tempTeamDTO = null;
         for (Team team : teamsList) {
-            if (tempTeamDTO.name == null) {
-                tempTeamDTO.name = team.name;
+            if (tempTeamDTO == null) {
+                tempTeamDTO = new TeamDTO(team.name);
             }
             if (!tempTeamDTO.name.equals(team.name)) {
                 teamsDTOList.add(tempTeamDTO);

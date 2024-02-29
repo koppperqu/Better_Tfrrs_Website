@@ -17,8 +17,6 @@ public class IndexController {
     TeamsTable teamsTable = new TeamsTable(db);
     @GetMapping(value = "/")
     public String index(Model model) throws SQLException {
-        List<Team> teamsList = teamsTable.getTeams();
-        model.addAttribute("teamsList2", teamsList);
         return "index";
     }
 }

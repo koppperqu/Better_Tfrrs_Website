@@ -31,14 +31,14 @@ body {
 	flex-direction: column;
 	min-height: 100vh;
 }
-.indexTeamDiv{
+.white-background{
     background: #f9f9f9b2;
 }
 .indexTeamLink{
     background: #f9f9f9b2;
     font-size: 1.25rem;
 }
-.indexTeamHeader{
+.divHeader{
 	background: var(--alt-gradient);
 	color: var(--text-color);
 }
@@ -54,8 +54,12 @@ body {
 	background-color: var(--secondary-color-hover);
 	color: var(--accent-color);
   }
-.custom-header{
+.custom-background{
 	background: var(--gradient);
+	color:var(--text-color);
+}
+.alt-custom-background{
+	background: var(--alt-gradient);
 	color:var(--text-color);
 }
 .content{
