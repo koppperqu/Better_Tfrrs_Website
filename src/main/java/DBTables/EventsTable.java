@@ -42,14 +42,6 @@ public class EventsTable {
         return resultSetToEventList(rs);
     }
 
-    public List<Event> getEventsWithEventNameAndIsMensEvent(String eventName, boolean isMensEvent) throws SQLException {
-        Statement stmt = connection.createStatement();
-        //SELECT * FROM TEAMS WHERE TEAMS.NAME = 'Wis.-La Crosse' AND TEAMS.IS_MENS_TEAM = TRUE
-        String sql = "SELECT * FROM TRACK.TEAMS WHERE NAME = \"" + eventName + "\" AND IS_MENS_TEAM = " + isMensEvent;
-        ResultSet rs = stmt.executeQuery(sql);
-        return resultSetToEventList(rs);
-    }
-
     private List<Event> resultSetToEventList (ResultSet rs) throws SQLException {
         List<Event> events = new ArrayList<>();
         while (rs.next()) {
@@ -73,5 +65,14 @@ public class EventsTable {
         else {
             return events.get(0).id;
         }
+    }
+
+    public List<Event> safeGetEventsIDWithShortName(String eventName) throws SQLException {
+        //select * from events where short_name = "Eau Claire"
+        String sql = "SELECT * FROM EVENTS WHERE SHORT_NAME = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, eventName);
+        ResultSet rs = stmt.executeQuery();
+        return resultSetToEventList(rs);
     }
 }

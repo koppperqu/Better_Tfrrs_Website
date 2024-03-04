@@ -19,10 +19,10 @@
                     <a class="btn custom-btn w-75 h-100 " th:href="'/'+ ${teamDTO.teamLink + '/events'}">Men and Women</a>
                 </div>
                 <div class="col-md-12 py-1 my-1">
-                    <a class="btn custom-btn w-75 h-100 " th:href="'/'+ ${teamDTO.teamLink + '/events/1'}">Men</a>
+                    <a class="btn custom-btn w-75 h-100 " th:href="'/'+ ${teamDTO.teamLink + '/events?isMensTeam=1'}">Men</a>
                 </div>
                 <div class="col-md-12 py-1 my-1">
-                    <a class="btn custom-btn w-75 h-100 " th:href="'/'+ ${teamDTO.teamLink + '/events/0'}">Women</a>
+                    <a class="btn custom-btn w-75 h-100 " th:href="'/'+ ${teamDTO.teamLink + '/events?isMensTeam=0'}">Women</a>
                 </div>
             </div>
         </div>
@@ -35,10 +35,10 @@
                     <a class="btn custom-btn w-75 h-100 " th:href="'/'+ ${teamDTO.teamLink + '/athletes'}">Men and Women</a>
                 </div>
                 <div class="col-md-12 py-1 my-1">
-                    <a class="btn custom-btn w-75 h-100 " th:href="'/'+ ${teamDTO.teamLink + '/athletes/1'}">Men</a>
+                    <a class="btn custom-btn w-75 h-100 " th:href="'/'+ ${teamDTO.teamLink + '/athletes?isMensTeam=1'}">Men</a>
                 </div>
                 <div class="col-md-12 py-1 my-1">
-                    <a class="btn custom-btn w-75 h-100 " th:href="'/'+ ${teamDTO.teamLink + '/athletes/1'}">Women</a>
+                    <a class="btn custom-btn w-75 h-100 " th:href="'/'+ ${teamDTO.teamLink + '/athletes?isMensTeam=0'}">Women</a>
                 </div>
             </div>
         </div>

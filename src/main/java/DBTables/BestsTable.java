@@ -2,6 +2,7 @@ package DBTables;
 
 import DB.DB;
 import DBObjects.Best;
+import DTOs.BestDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -39,6 +40,21 @@ public class BestsTable {
             statement.executeUpdate();
         }
     }
+//    SELECT B.MARK, B.LINK, A.NAME
+//    FROM BESTS B
+//    JOIN ATHLETES A ON B.ATHLETE_ID = A.ID
+//    WHERE A.TEAM_ID = 1
+//    AND B.EVENT_ID = 1
+    public List<BestDTO> getBestsWithTeamIDAndEventID(int teamId, int eventId) throws SQLException {
+        String sql = "SELECT B.MARK, B.LINK, A.NAME FROM BESTS B JOIN ATHLETES A ON B.ATHLETE_ID = A.ID  WHERE A.TEAM_ID = ? AND B.EVENT_ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, teamId);
+            statement.setInt(2, eventId);
+            try (ResultSet rs = statement.executeQuery()) {
+                return resultSetToBestDTOList(rs);
+            }
+        }
+    }
 
     private void insertBest(Best best, int athlete_id) throws SQLException {
         String sql = "INSERT INTO BESTS (mark, link, event_id, athlete_id) VALUES (?, ?, ?, ?)";
@@ -73,4 +89,28 @@ public class BestsTable {
         return bests;
     }
 
+    public List<BestDTO> getBestsWithTeamNameAndEventID(String teamName, int eventID) throws SQLException {
+        String sql = "SELECT B.MARK, B.LINK, A.NAME FROM BESTS B JOIN ATHLETES A ON B.ATHLETE_ID = A.ID JOIN TEAMS T ON A.TEAM_ID = T.ID WHERE T.NAME = ? AND B.EVENT_ID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, teamName);
+            statement.setInt(2, eventID);
+            try (ResultSet rs = statement.executeQuery()) {
+                return resultSetToBestDTOList(rs);
+            }
+        }
+    }
+
+    private List<BestDTO> resultSetToBestDTOList(ResultSet rs) throws SQLException {
+        List<BestDTO> bestDTOS = new ArrayList<>();
+        while (rs.next()) {
+            // Assuming DBObjects.Best class has a constructor that takes relevant fields
+            BestDTO bestDTO = new BestDTO(
+                    rs.getString("mark"),
+                    rs.getString("name"),
+                    rs.getString("link")
+            );
+            bestDTOS.add(bestDTO);
+        }
+        return bestDTOS;
+    }
 }
