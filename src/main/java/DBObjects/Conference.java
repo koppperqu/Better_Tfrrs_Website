@@ -1,15 +1,15 @@
 package DBObjects;
 
-public class Team {
+public class Conference {
     public int id;
     public String name;
     public String link;
-    public int conferenceId;
+    public int divisionId;
 
-    public Team(int id, String name, String link, int conferenceId) {
+    public Conference(int id, String name, String link,int divisionId){
         this.id = id;
         this.name = name;
         this.link = link;
-        this.conferenceId = conferenceId;
+        this.divisionId = divisionId;
     }
 }

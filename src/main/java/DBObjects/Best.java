@@ -1,17 +1,15 @@
 package DBObjects;
 
 public class Best {
-    public int id;
+    public int eventId;
+    public int athleteId;
     public String mark;
     public String link;
-    public int event_id;
-    public int athlete_id;
 
-    public Best(int id, String mark, String link, int event_id, int athlete_id){
-        this.id = id;
+    public Best(String mark, String link, int eventId, int athleteId){
         this.mark = mark;
         this.link = link;
-        this.event_id = event_id;
-        this.athlete_id = athlete_id;
+        this.eventId = eventId;
+        this.athleteId = athleteId;
     }
 }
