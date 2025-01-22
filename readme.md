@@ -25,10 +25,11 @@ It then updates the database as needed to keep it up to date.
   <li> Add athletes if they do not exist already</li>
   <li>For each athlete check/gather all their PR's</li>
   <li>add/update PR's if necessary.</li>
-<ol>
+</ol>
+  
 tofinish
 
-#The Website
+<h1>The Website</h1>
 todo
 
 For furture reference
