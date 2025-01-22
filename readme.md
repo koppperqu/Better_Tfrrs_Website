@@ -1,4 +1,4 @@
-#The Goal
+<h1>The Goal</h1>
 I made a previous version of this website using Python and the Django framework.
 There is an issue with how the data was being added to the database causing
 duplicates of athletes. Instead of refactoring that code I decided to port
@@ -8,23 +8,24 @@ I started this project at the end of 2023/start of 2024. Got busy and put it dow
 Now I want to complete it and after coming back realized better documentation would
 be helpful for myself in the future if I need to fix something again.
 
-#The Database
+<h1>The Database</h1>
 In the python version everything was built in Python. With this version I wanted to 
 set up a separate SQL server to practice interacting with it. That is how this was 
 set up. The table and columns that exist in the database are as follows.
 
 **For now reference the DBObjects, will update later.
 
-#The Scraper
+<h1>The Scraper</h1>
 The scraper accesses HTMl from TFRRS. It extracts the data to get athletes, bests, teams etc.
 It then updates the database as needed to keep it up to date. 
-1. Gather the data for a conference from TFRRS. (All teams in a conference)
-2. Add the teams/conference if necessary
-3. For each team, gather all athletes.
-4. Add athletes if they do not exist already
-5. For each athlete check/gather all their PR's
-6. add/update PR's if necessary.
-
+<ol>
+  <li>Gather the data for a conference from TFRRS. (All teams in a conference)</li>
+  <li>Add the teams/conference if necessary</li>
+  <li>For each team, gather all athletes.</li>
+  <li> Add athletes if they do not exist already</li>
+  <li>For each athlete check/gather all their PR's</li>
+  <li>add/update PR's if necessary.</li>
+<ol>
 tofinish
 
 #The Website
