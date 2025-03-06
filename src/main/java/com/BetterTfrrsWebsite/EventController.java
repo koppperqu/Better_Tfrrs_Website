@@ -70,9 +70,11 @@ public class EventController {
         String decodedEventName = urlDecode(eventName);
         List<Team> teamsList;
         if (Objects.equals(isMensTeam, "1")){
-            teamsList = teamsTable.getTeamsWithTeamNameAndIsMensTeam(decodedTeamName, Boolean.parseBoolean(isMensTeam));
+            boolean isMensTeamBool = true;
+            teamsList = teamsTable.getTeamsWithTeamNameAndIsMensTeam(decodedTeamName, isMensTeamBool);
         } else if (Objects.equals(isMensTeam, "0")) {
-            teamsList = teamsTable.getTeamsWithTeamNameAndIsMensTeam(decodedTeamName, Boolean.parseBoolean(isMensTeam));
+            boolean isMensTeamBool = false;
+            teamsList = teamsTable.getTeamsWithTeamNameAndIsMensTeam(decodedTeamName, isMensTeamBool);
         }else {
             teamsList = teamsTable.safeGetTeamsWithName(decodedTeamName);
         }
