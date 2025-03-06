@@ -32,7 +32,7 @@ tofinish
 <h1>The Website</h1>
 todo
 
-For furture reference
+For furture referencem
 General idea is 
 DTO to get data to website
 DB Objects for all data that exists in the db so we can work with it
@@ -41,3 +41,8 @@ Scraper gathers data from TFRRS so we have data in our db.
 
 The goal of this website is to make it easier to navigate through a teams athletes to identify 
 their PR's. Additionally 
+
+
+<H1>Scope Creep Adjustment</H1>
+The main goal of this project is to get the website up and running. Expanding to more conference will be 
+a later issue. For now I will focus on the WIAC conference <3. Will try to keep expanding and scalability in mind.

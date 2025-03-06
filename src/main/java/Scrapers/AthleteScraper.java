@@ -16,10 +16,10 @@ public class AthleteScraper {
     public List<Athlete> scrapeTeamPage(Document doc) {
         Element rosterDiv = findRosterDiv(doc);
         Element athleteTable = findAthleteTable(rosterDiv);
-        extractAthleteNamesAndLinks(athleteTable);
-        return assembleDataIntoListOfTeams();
+        extractAthleteNamesLinksYears(athleteTable);
+        return assembleDataIntoListOfAthletes();
     }
-    private List<Athlete> assembleDataIntoListOfTeams() {
+    private List<Athlete> assembleDataIntoListOfAthletes() {
         List<Athlete> athletes = new ArrayList<>();
         for (int i = 0; i < athleteNames.size(); i++){
             // Assuming DBObjects.Team class has a constructor that takes relevant fields
@@ -35,16 +35,18 @@ public class AthleteScraper {
         return athletes;
     }
 
-    private void extractAthleteNamesAndLinks(Element table){
+    private void extractAthleteNamesLinksYears(Element table){
         athleteNames = new ArrayList<>();
         athleteLinks = new ArrayList<>();
         athleteYears = new ArrayList<>();
         Element tbody = table.getElementsByTag("tbody").first();
+        assert tbody != null;
         Elements athleteRows = tbody.getElementsByTag("tr");
         for (Element athleteRow : athleteRows){
             Elements tableData = athleteRow.getElementsByTag("td");
             Element td1 = tableData.get(0);
             Element anchorTag = td1.getElementsByTag("a").first();
+            assert anchorTag != null;
             String athleteName = anchorTag.text();
             athleteName = cleanAthleteName(athleteName);
             //Add the tfrrs prefix because for some reason the links dont include it in the href....

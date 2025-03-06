@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TeamScraper{
+public class RegionScraper {
     //public Document conferenceDoc;
     public List<String> teamNames;
     public List<String> teamLinks;

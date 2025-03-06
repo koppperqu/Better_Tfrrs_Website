@@ -4,6 +4,7 @@ import DBTables.*;
 import Scrapers.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import java.util.concurrent.TimeUnit;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,10 +12,32 @@ import java.util.List;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+//1/29/25 Pivoting my approach to this project, initially I was going to flesh this out so it
+//was implemented in a expandable way. Realied 2 things, 1 I don't care if it works for divisions outside
+//of D3, I want to check on nationals standings and 2 I don't want to invest a lot of time into this. I have
+//other things I would like to invest some time into. With that in mind I will make this functional to the point
+//I need it to be while trying my best to maintain good practices. This will hopefully be enough to set the program
+//up for expandability in the future if I want it.
 public class Main {
+    final static String[] D3RegionLinks = {
+            "https://www.tfrrs.org/leagues/1435.html", //DIII All-Ohio
+            "https://www.tfrrs.org/leagues/1612.html", //DIII East Region
+            "https://www.tfrrs.org/leagues/1519.html", //DIII Great Lakes Region
+            "https://www.tfrrs.org/leagues/1610.html", //DIII Metro Region
+            "https://www.tfrrs.org/leagues/1520.html", //DIII Mid-Atlantic Region
+            "https://www.tfrrs.org/leagues/1613.html", //DIII Mideast Region
+            "https://www.tfrrs.org/leagues/1521.html", //DIII Midwest Region
+            "https://www.tfrrs.org/leagues/255.html",  //DIII New England
+            "https://www.tfrrs.org/leagues/1517.html", //DIII Niagara Region
+            "https://www.tfrrs.org/leagues/1518.html", //DIII North Region
+            "https://www.tfrrs.org/leagues/1522.html", //DIII South Region
+            "https://www.tfrrs.org/leagues/1523.html", //DIII West Region
+            "https://www.tfrrs.org/leagues/253.html"   //ECAC DIII
+    };
     //static boolean firstTime = true;
     //Set to false for testing
-    static boolean firstTime = false;
+    static boolean checkD3Regions = true;
     static DB db = null;
     static AthleteTable athleteTable = null;
     static BestsTable bestsTable = null;
@@ -23,33 +46,46 @@ public class Main {
     static BestsScraper bestsScraper = new BestsScraper();
     static TeamScraper teamScraper = new TeamScraper();
     static AthleteScraper athleteScraper = new AthleteScraper();
-    //Use this until adding more conferences.
-    final static String URL = "https://www.tfrrs.org/leagues/1420.html";
+    static RegionScraper regionScraper = new RegionScraper();
+    //Hard code WIAC conference until decided to expand
+    final static String WIACconference = "https://www.tfrrs.org/leagues/1420.html";
     //final String URL = "https://www.tfrrs.org/";
     final static String url = "jdbc:mysql://localhost:3306/track";
     final static String user = System.getenv("dbuser");
     final static String password = System.getenv("dbpass");
+
     public static void main(String[] args) {
 
         try {
             //Init db and tables
             // JDBC URL, username, and password of MySQL server
+
             db = new DB();
             athleteTable = new AthleteTable(db);
             bestsTable = new BestsTable(db);
             eventsTable = new EventsTable(db);
             teamsTable = new TeamsTable(db);
 
-            if (firstTime){
-                //future maybe Gathers all conferences
-                //checkNation();?
-                //future maybe all teams in each conference for now it just checks wiac
-                checkConferences();
+
+            if (checkD3Regions){
+                //Unsure how much data we will be storing in vars currently, to be safe we will process
+                //each region then write out data after processing the region, clear the var and move to next
+
+                /* Not doing regions, pivot to get wiac setup first
+                for (String regionLink : D3RegionLinks){
+                    //Go to each of these pages to get the teams, each team page has its conference and division listed.
+                    //we will then go to each team to get the athletes' data.
+                    List<Team> regionTeams = regionScraper.scrapeRegionPage(regionLink);
+                    
+                    teamsTable.tryInsertTeams(regionTeams);
+                }*/
+                checkConferences(WIACconference);
                 //Get all teams and their athletes
                 checkTeams();
                 //Check the athletes for bests
                 checkAthletesBests();
-                firstTime = false;
+                System.out.println("Finished scraping");
+                checkD3Regions = false;
             }
             /* Commented out for now as it will just run everytime i start to debug.
             //Check athlete for bests every night at midnight.
@@ -73,10 +109,10 @@ public class Main {
         }
     }
 
-    private static void checkConferences() throws IOException, SQLException {        //Opens the tffrs conference page for wiac
+    private static void checkConferences(String conferenceURL) throws IOException, SQLException {
         //just checks the wiac conference for now update if adding more
-        Document document = Jsoup.connect(URL).get();
-        List<Team> teamsNoIdOrConference = teamScraper.scrapeConferencePage(document);
+        Document conferencePage = Jsoup.connect(conferenceURL).get();
+        List<Team> teamsNoIdOrConference = teamScraper.scrapeConferencePage(conferencePage);
         TeamsTable teamsTable = new TeamsTable(db);
         //Try to insert the teams into the DB is they dont exists already
         teamsTable.tryInsertTeams(teamsNoIdOrConference,1);
@@ -87,9 +123,9 @@ public class Main {
         List<Team> teams = teamsTable.getTeams();
         for (Team team : teams){
             //opens the team page
-            Document document = Jsoup.connect(team.link).get();
+            Document teamPage = Jsoup.connect(team.link).get();
             //scrape the athletes
-            List<Athlete> athletesNoID = athleteScraper.scrapeTeamPage(document);
+            List<Athlete> athletesNoID = athleteScraper.scrapeTeamPage(teamPage);
             //get the teams id
             int teamID = teamsTable.getTeamsWithTeamNameAndIsMensTeam(team.name, team.isMensTeam).get(0).id;
             //try to add them if they don't exist
@@ -97,14 +133,19 @@ public class Main {
         }
     }
 
-    private static void checkAthletesBests() throws SQLException, IOException {
+    private static void checkAthletesBests() throws SQLException, IOException, InterruptedException {
         //Retrieve all athletes
         List<Athlete> athletes = athleteTable.getAthletes();
         //Scrap each athletes page for their bests
+        int amtAtheltes = athletes.size();
+        int currAthlete = 0;
         for (Athlete athlete : athletes){
+            TimeUnit.MILLISECONDS.sleep(500);
+            currAthlete ++;
+            System.out.println("Processing "+currAthlete+"/"+amtAtheltes+" "+ athlete.name);
             Document document = Jsoup.connect(athlete.link).get();
             List<Best> bestsNoID = bestsScraper.scrapeAthletePage(document, eventsTable);
-            int athlete_id = athleteTable.getAthleteWithAthleteNameAndTeamID(athlete.name,athlete.team_id).get(0).id;
+            int athlete_id = athleteTable.getAthleteWithAthleteNameAndTeamID(athlete.name,athlete.teamId).get(0).id;
             bestsTable.tryInsertBests(bestsNoID,athlete_id);
         }
     }

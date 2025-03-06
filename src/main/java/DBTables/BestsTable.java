@@ -13,14 +13,14 @@ public class BestsTable {
     public BestsTable(DB db) {
         this.connection = db.connection;
     }
-    public void tryInsertBests(List<Best> bestsNoIDS, int athlete_id) throws SQLException {
+    public void tryInsertBests(List<Best> bestsNoIDS, int athleteId) throws SQLException {
         for (Best bestTryInsert : bestsNoIDS){
-            List<Best> specificBests = getBestsWithBestAthleteIDAndEventID(bestTryInsert.event_id,athlete_id);
+            List<Best> specificBests = getBestsWithBestAthleteIDAndEventID(bestTryInsert.eventId,athleteId);
             if (specificBests.isEmpty()){
-                insertBest(bestTryInsert, athlete_id);
+                insertBest(bestTryInsert, athleteId);
             }
             else {
-                updateBest(specificBests.get(0).id,bestTryInsert.mark, bestTryInsert.link);
+                updateBest(specificBests.get(0).bestID,bestTryInsert.mark, bestTryInsert.link);
             }
         }
     }
@@ -61,7 +61,7 @@ public class BestsTable {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, best.mark);
             stmt.setString(2, best.link);
-            stmt.setInt(3, best.event_id);
+            stmt.setInt(3, best.eventId);
             stmt.setInt(4, athlete_id);
             stmt.executeUpdate();
         }

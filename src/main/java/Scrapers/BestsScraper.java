@@ -21,7 +21,9 @@ public class BestsScraper {
         //Need to pass in events table to be able to get event id
         this.eventsTable = eventsTable;
         Element bestsTable = findBestsTable(doc);
-        extractAthleteEventNamesMarksLinks(bestsTable);
+        if (bestsTable != null) {
+            extractAthleteEventNamesMarksLinks(bestsTable);
+        }
         return assembleDataIntoListOfBests();
     }
 
@@ -36,6 +38,7 @@ public class BestsScraper {
             if (!tableData.get(i).text().trim().isEmpty()) {
                 String eventName = tableData.get(i).text().trim();
                 Element anchorTag = tableData.get(i + 1).getElementsByTag("a").first();
+                assert anchorTag != null;
                 String bestLink = anchorTag.attr("href");
                 String bestMark = anchorTag.text();
                 eventShortNames.add(eventName);

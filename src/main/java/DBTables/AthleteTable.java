@@ -29,7 +29,7 @@ public class AthleteTable {
             stmt.setString(1, athlete.name);
             stmt.setString(2, athlete.link);
             stmt.setInt(3, team_id);
-            stmt.setString(4, athlete.year);
+            stmt.setString(4, athlete.grade);
             stmt.executeUpdate();
         }
     }
