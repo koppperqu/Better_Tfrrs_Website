@@ -140,10 +140,25 @@ public class Main {
         int amtAtheltes = athletes.size();
         int currAthlete = 0;
         for (Athlete athlete : athletes){
-            TimeUnit.MILLISECONDS.sleep(500);
             currAthlete ++;
             System.out.println("Processing "+currAthlete+"/"+amtAtheltes+" "+ athlete.name);
-            Document document = Jsoup.connect(athlete.link).get();
+            Document document;
+            try{
+                TimeUnit.MILLISECONDS.sleep(500);
+                document = Jsoup.connect(athlete.link).get();
+            } catch (org.jsoup.HttpStatusException e) {
+                System.out.println("HTTP Status Code " + e.getStatusCode()+" for athlete "+athlete.name+" trying again in 10 sec");
+                //If there is an issue with the request wait 10 seconds and try again
+                TimeUnit.SECONDS.sleep(10);
+                try{
+                    document = Jsoup.connect(athlete.link).get();
+                } catch (org.jsoup.HttpStatusException f) {
+                    //try waiting for 30 seconds
+                    System.out.println("HTTP Status Code " + f.getStatusCode()+" for athlete "+athlete.name+" trying again in 30 sec");
+                    TimeUnit.SECONDS.sleep(30);
+                    document = Jsoup.connect(athlete.link).get();
+                }
+            }
             List<Best> bestsNoID = bestsScraper.scrapeAthletePage(document, eventsTable);
             int athlete_id = athleteTable.getAthleteWithAthleteNameAndTeamID(athlete.name,athlete.teamId).get(0).id;
             bestsTable.tryInsertBests(bestsNoID,athlete_id);

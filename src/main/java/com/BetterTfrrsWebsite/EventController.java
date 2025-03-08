@@ -1,15 +1,14 @@
 package com.BetterTfrrsWebsite;
 
 import DB.DB;
-import DBObjects.Best;
 import DBObjects.Event;
 import DBObjects.Team;
 import DBTables.BestsTable;
 import DBTables.EventsTable;
 import DBTables.TeamsTable;
+import DTOs.AthleteDTO;
 import DTOs.BestDTO;
 import DTOs.EventDTO;
-import DTOs.TeamDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +30,7 @@ public class EventController {
 
     public UrlGenerator urlGenerator = new UrlGenerator();
     @GetMapping("/{teamName}/events")
-    public String teamTest(@PathVariable String teamName, @RequestParam(required = false) String isMensTeam, Model model) throws SQLException, UnsupportedEncodingException {
+    public String eventsForTeamPath(@PathVariable String teamName, @RequestParam(required = false) String isMensTeam, Model model) throws SQLException, UnsupportedEncodingException {
         String decodedTeamName = urlDecode(teamName);
         List<Team> teamsList = teamsTable.safeGetTeamsWithName(decodedTeamName);
         if (!teamsList.isEmpty() && (Objects.equals(isMensTeam, "0") ||Objects.equals(isMensTeam, "1") || isMensTeam == null)){
@@ -65,7 +64,7 @@ public class EventController {
     }
 
     @GetMapping("/{teamName}/events/{eventName}")
-    public String teamTest(@PathVariable String teamName,@PathVariable String eventName, @RequestParam(required = false) String isMensTeam, Model model) throws SQLException, UnsupportedEncodingException {
+    public String specificEventPath(@PathVariable String teamName,@PathVariable String eventName, @RequestParam(required = false) String isMensTeam, Model model) throws SQLException, UnsupportedEncodingException {
         String decodedTeamName = urlDecode(teamName);
         String decodedEventName = urlDecode(eventName);
         List<Team> teamsList;

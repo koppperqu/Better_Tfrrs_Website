@@ -61,4 +61,19 @@ public class AthleteTable {
         }
         return Athletes;
     }
+    //Ned to get athletes for a team, with mens team = to whatever is passed either 1 0 or either
+    public List<Athlete> getAthletesForTeamName(String teamName) throws SQLException {
+        Statement stmt = connection.createStatement();
+        String sql = "SELECT A.* FROM ATHLETES A JOIN TEAMS T WHERE T.ID = A.TEAM_ID AND T.NAME=\"" + teamName + "\"";
+        ResultSet rs = stmt.executeQuery(sql);
+        return resultSetToAthleteList(rs);
+    }
+
+    public List<Athlete> getAthletesForTeamNameAndIsMensTeam(String teamName, boolean isMensTeam) throws SQLException {
+        Statement stmt = connection.createStatement();
+        String sql = "SELECT A.* FROM ATHLETES A JOIN TEAMS T WHERE T.ID = A.TEAM_ID AND T.NAME=\"" + teamName + "\"";
+        sql += "AND T.IS_MENS_TEAM = " + isMensTeam;
+        ResultSet rs = stmt.executeQuery(sql);
+        return resultSetToAthleteList(rs);
+    }
 }
