@@ -43,9 +43,25 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <h1>This is where the weekly pr data will go</h1>
+    <div th:if="${not #lists.isEmpty(meetDTOS)}">
+        <div class = "justify-content-center" th:each = "meetDTO : ${meetDTOS}">
+            <div class = "text-center content">
+                <h2 class="custom-background p-2 mt-2 rounded" th:text="${meetDTO.meetname}"></h2>
+                <h3 th:text="${meetDTO.meetdate}"></h3>
+                <h5 class="pb-3" th:text="${meetDTO.numberofprs} + ' total pr\'s | ' + ${meetDTO.uniqueprs} +' people pr\'d'"></h5>
+            </div>
+            <div class="justify-content-center container">
+                <div th:each = "recentPrsDTO : ${meetDTO.prsatmeet}" >
+                    <span class="fs-5" th:text="${recentPrsDTO.athletename} + ' set a pr of '+${recentPrsDTO.pr}+' in '+${recentPrsDTO.eventname}"></span>
+                </div>
+            </div>
+        </div>
     </div>
+    <div th:unless="${not #lists.isEmpty(meetDTOS)}">
+        <h1>No recent PRs available</h1>
+        <p class="fs-4 px-4">There have been no recent prs in the last two meets please feel free to look at the prs sorted by event or athlete by using the links above!</p>
+    </div>
+
 </div>
 </body>
 </html>
