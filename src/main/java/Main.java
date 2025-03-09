@@ -127,7 +127,7 @@ public class Main {
             //scrape the athletes
             List<Athlete> athletesNoID = athleteScraper.scrapeTeamPage(teamPage);
             //get the teams id
-            int teamID = teamsTable.getTeamsWithTeamNameAndIsMensTeam(team.name, team.isMensTeam).get(0).id;
+            int teamID = teamsTable.getTeamsWithNameAndIsMensTeam(team.name, team.isMensTeam).get(0).id;
             //try to add them if they don't exist
             athleteTable.tryInsertAthletes(athletesNoID,teamID);
         }

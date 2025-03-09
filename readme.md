@@ -38,6 +38,11 @@ DTO to get data to website
 DB Objects for all data that exists in the db so we can work with it
 DB Tables are the classes used to interact with the tables. Adding, querying, etc.
 Scraper gathers data from TFRRS so we have data in our db. 
+1) Request comes in controller handle it
+2) The correct method in the controller determines which query is needed to get the correct data to return from the DB.
+3) DBTable classes have the query set and return the data in DBObjects. If a table is joined the data will be returned 2 lists of the approriate DBObject this is to prevent issues where we are querying one table but still need data from another.
+4) The controller identifyies which data we need to send to the template in order to server the webpage and puts it into the DTO. 
+
 
 The goal of this website is to make it easier to navigate through a teams athletes to identify 
 their PR's. Additionally 

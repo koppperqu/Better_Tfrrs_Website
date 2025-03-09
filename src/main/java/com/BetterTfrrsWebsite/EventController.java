@@ -6,8 +6,8 @@ import DBObjects.Team;
 import DBTables.BestsTable;
 import DBTables.EventsTable;
 import DBTables.TeamsTable;
-import DTOs.AthleteDTO;
 import DTOs.BestDTO;
+import DTOs.EventBestDTO;
 import DTOs.EventDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +32,7 @@ public class EventController {
     @GetMapping("/{teamName}/events")
     public String eventsForTeamPath(@PathVariable String teamName, @RequestParam(required = false) String isMensTeam, Model model) throws SQLException, UnsupportedEncodingException {
         String decodedTeamName = urlDecode(teamName);
-        List<Team> teamsList = teamsTable.safeGetTeamsWithName(decodedTeamName);
+        List<Team> teamsList = teamsTable.getTeamsWithName(decodedTeamName);
         if (!teamsList.isEmpty() && (Objects.equals(isMensTeam, "0") ||Objects.equals(isMensTeam, "1") || isMensTeam == null)){
         String teamNameURLSafe = urlGenerator.generateUrl(decodedTeamName);
         List<Event> eventsList = eventsTable.getEvents();
@@ -70,12 +70,12 @@ public class EventController {
         List<Team> teamsList;
         if (Objects.equals(isMensTeam, "1")){
             boolean isMensTeamBool = true;
-            teamsList = teamsTable.getTeamsWithTeamNameAndIsMensTeam(decodedTeamName, isMensTeamBool);
+            teamsList = teamsTable.getTeamsWithNameAndIsMensTeam(decodedTeamName, isMensTeamBool);
         } else if (Objects.equals(isMensTeam, "0")) {
             boolean isMensTeamBool = false;
-            teamsList = teamsTable.getTeamsWithTeamNameAndIsMensTeam(decodedTeamName, isMensTeamBool);
+            teamsList = teamsTable.getTeamsWithNameAndIsMensTeam(decodedTeamName, isMensTeamBool);
         }else {
-            teamsList = teamsTable.safeGetTeamsWithName(decodedTeamName);
+            teamsList = teamsTable.getTeamsWithName(decodedTeamName);
         }
         int teamID;
         int eventID;
@@ -88,24 +88,24 @@ public class EventController {
         }else{
             return "error";
         }
-        List<Event> eventList = eventsTable.safeGetEventsIDWithShortName(decodedEventName);
+        List<Event> eventList = eventsTable.getEventsWithEventShortName(decodedEventName);
         if (!eventList.isEmpty()){
             eventID = eventList.get(0).id;
         }else{
             return "error";
         }
-        List<BestDTO> bestsDTOSList = new ArrayList<>();
+        List<EventBestDTO> eventBestsDTOSList = new ArrayList<>();
         if (teamID == -1){
-            bestsDTOSList = bestsTable.getBestsWithTeamNameAndEventID(decodedTeamName,eventID);
+            eventBestsDTOSList = bestsTable.getBestsWithTeamNameAndEventID(decodedTeamName,eventID);
         }else {
-            bestsDTOSList = bestsTable.getBestsWithTeamIDAndEventID(teamID,eventID);
+            eventBestsDTOSList = bestsTable.getBestsWithTeamIDAndEventID(teamID,eventID);
         }
         //we need to query the bests table for bests join on athletes that are form teamname and for eventID
         //We need to give the page a list of bestDTOS that will have athlete name, mark, tfrrsLink for the mark
         //clicking on athlete name goes to their profile, clicking mark goes to the tfrrs page w/ the mark
 
         model.addAttribute("teamName", decodedTeamName);
-        model.addAttribute("bestDTOS", bestsDTOSList);
+        model.addAttribute("eventBestDTOS", eventBestsDTOSList);
         model.addAttribute("eventName", decodedEventName);
         return "eventBests";
     }

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="base"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div layout:fragment="content">
+    <div class="text-center">
+
+        <div class="custom-background rounded-top">
+            <h3 class="col-12 display-3 p-2 pb-0 mb-0" th:text="${teamName}"></h3>
+            <h3 class="col-12 display-5 p-2 pt-0"th:text = "${athleteName} + ' PR\'s'"></h3>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-5 col-md-3 col-lg-2 m-1 p-1 d-flex flex-column" th:each = "athleteBestDTO : ${athleteBestDTOS}">
+                <a class = "mb-1 flex-grow-1 btn w-100 custom-btn" th:href="${athleteBestDTO.eventURL}" th:text = "${athleteBestDTO.eventName}"></a>
+                <a class = "w-100 btn w-100 custom-btn" th:href="${athleteBestDTO.tfrrsBestLink}" th:text = "${athleteBestDTO.mark}"></a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

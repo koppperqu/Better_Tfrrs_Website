@@ -2,8 +2,11 @@ package DBTables;
 
 import DB.DB;
 import DBObjects.Best;
+import DTOs.AthleteBestDTO;
 import DTOs.BestDTO;
+import DTOs.EventBestDTO;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +29,11 @@ public class BestsTable {
     }
 
     private List<Best> getBestsWithBestAthleteIDAndEventID(int eventId, int athleteId) throws SQLException {
-        Statement stmt = connection.createStatement();
-        String sql = "SELECT * FROM BESTS WHERE EVENT_ID = " + eventId + " AND ATHLETE_ID = " + athleteId;
-        ResultSet rs = stmt.executeQuery(sql);
+        String sql = "SELECT * FROM BESTS WHERE EVENT_ID = ? AND ATHLETE_ID = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setInt(1, eventId);
+        stmt.setInt(2, athleteId);
+        ResultSet rs = stmt.executeQuery();
         return resultSetToBestList(rs);
     }
     public void updateBest(int bestId, String newMark, String newLink) throws SQLException {
@@ -45,13 +50,13 @@ public class BestsTable {
 //    JOIN ATHLETES A ON B.ATHLETE_ID = A.ID
 //    WHERE A.TEAM_ID = 1
 //    AND B.EVENT_ID = 1
-    public List<BestDTO> getBestsWithTeamIDAndEventID(int teamId, int eventId) throws SQLException {
+    public List<EventBestDTO> getBestsWithTeamIDAndEventID(int teamId, int eventId) throws SQLException, UnsupportedEncodingException {
         String sql = "SELECT B.MARK, B.LINK, A.NAME FROM BESTS B JOIN ATHLETES A ON B.ATHLETE_ID = A.ID  WHERE A.TEAM_ID = ? AND B.EVENT_ID = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, teamId);
             statement.setInt(2, eventId);
             try (ResultSet rs = statement.executeQuery()) {
-                return resultSetToBestDTOList(rs);
+                return resultSetToEventBestDTOList(rs);
             }
         }
     }
@@ -67,9 +72,9 @@ public class BestsTable {
         }
     }
     public List<Best> getBests() throws SQLException {
-        Statement stmt = connection.createStatement();
         String sql = "SELECT * FROM BESTS";
-        ResultSet rs = stmt.executeQuery(sql);
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
         return resultSetToBestList(rs);
     }
 
@@ -89,13 +94,13 @@ public class BestsTable {
         return bests;
     }
 
-    public List<BestDTO> getBestsWithTeamNameAndEventID(String teamName, int eventID) throws SQLException {
+    public List<EventBestDTO> getBestsWithTeamNameAndEventID(String teamName, int eventID) throws SQLException, UnsupportedEncodingException {
         String sql = "SELECT B.MARK, B.LINK, A.NAME FROM BESTS B JOIN ATHLETES A ON B.ATHLETE_ID = A.ID JOIN TEAMS T ON A.TEAM_ID = T.ID WHERE T.NAME = ? AND B.EVENT_ID = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, teamName);
             statement.setInt(2, eventID);
             try (ResultSet rs = statement.executeQuery()) {
-                return resultSetToBestDTOList(rs);
+                return resultSetToEventBestDTOList(rs);
             }
         }
     }
@@ -112,5 +117,40 @@ public class BestsTable {
             bestDTOS.add(bestDTO);
         }
         return bestDTOS;
+    }
+
+    private List<EventBestDTO> resultSetToEventBestDTOList(ResultSet rs) throws SQLException, UnsupportedEncodingException {
+        List<EventBestDTO> eventBestDTOS = new ArrayList<>();
+        while (rs.next()) {
+            // Assuming DBObjects.Best class has a constructor that takes relevant fields
+            EventBestDTO eventBestDTO = new EventBestDTO(
+                    rs.getString("B.MARK"),
+                    rs.getString("A.NAME"),
+                    rs.getString("B.LINK")
+            );
+            eventBestDTOS.add(eventBestDTO);
+        }
+        return eventBestDTOS;
+    }
+
+    public List<AthleteBestDTO> getBestsWithAthleteID(int athleteId) throws SQLException, UnsupportedEncodingException {
+        String sql = "SELECT * FROM BESTS B JOIN EVENTS E WHERE E.ID = B.EVENT_ID AND B.ATHLETE_ID = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setInt(1, athleteId);
+        ResultSet rs = stmt.executeQuery();
+        return resultSetToAthleteBestDTOList(rs);
+    }
+
+    private List<AthleteBestDTO> resultSetToAthleteBestDTOList(ResultSet rs) throws SQLException, UnsupportedEncodingException {
+        List<AthleteBestDTO> athleteBestDTOS = new ArrayList<>();
+        while (rs.next()) {
+            AthleteBestDTO athleteBestDTO = new AthleteBestDTO(
+                    rs.getString("B.MARK"),
+                    rs.getString("E.SHORT_NAME"),
+                    rs.getString("B.LINK")
+            );
+            athleteBestDTOS.add(athleteBestDTO);
+        }
+        return athleteBestDTOS;
     }
 }

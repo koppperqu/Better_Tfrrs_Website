@@ -30,15 +30,16 @@ public class EventsTable {
         }
     }
     public List<Event> getEvents() throws SQLException {
-        Statement stmt = connection.createStatement();
         String sql = "SELECT * FROM EVENTS";
-        ResultSet rs = stmt.executeQuery(sql);
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
         return resultSetToEventList(rs);
     }
     public List<Event> getEventsWithEventShortName(String eventShortName) throws SQLException {
-        Statement stmt = connection.createStatement();
-        String sql = "SELECT * FROM EVENTS WHERE SHORT_NAME = \"" + eventShortName + "\"";
-        ResultSet rs = stmt.executeQuery(sql);
+        String sql = "SELECT * FROM EVENTS WHERE SHORT_NAME = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, eventShortName);
+        ResultSet rs = stmt.executeQuery();
         return resultSetToEventList(rs);
     }
 
@@ -65,14 +66,5 @@ public class EventsTable {
         else {
             return events.get(0).id;
         }
-    }
-
-    public List<Event> safeGetEventsIDWithShortName(String eventName) throws SQLException {
-        //select * from events where short_name = "Eau Claire"
-        String sql = "SELECT * FROM EVENTS WHERE SHORT_NAME = ?";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setString(1, eventName);
-        ResultSet rs = stmt.executeQuery();
-        return resultSetToEventList(rs);
     }
 }

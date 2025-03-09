@@ -14,7 +14,7 @@ public class TeamsTable {
         this.connection = db.connection;
     }
 
-    public List<Team> safeGetTeamsWithName(String teamName) throws SQLException {
+    public List<Team> getTeamsWithName(String teamName) throws SQLException {
         //select * from teams where name = "Eau Claire"
         String sql = "SELECT * FROM TEAMS WHERE NAME = ?";
         PreparedStatement stmt = connection.prepareStatement(sql);
@@ -25,7 +25,7 @@ public class TeamsTable {
 
     public void tryInsertTeams(List<Team> teamsNoIDS, int conference_id) throws SQLException {
         for (Team teamTryInsert : teamsNoIDS){
-            List<Team> specificTeams = getTeamsWithTeamName(teamTryInsert.name);
+            List<Team> specificTeams = getTeamsWithName(teamTryInsert.name);
             boolean teamExists = false;
             for (Team team :specificTeams){
                 if (team.isMensTeam == teamTryInsert.isMensTeam) {
@@ -51,23 +51,20 @@ public class TeamsTable {
         }
     }
     public List<Team> getTeams() throws SQLException {
-        Statement stmt = connection.createStatement();
         String sql = "SELECT * FROM TEAMS";
-        ResultSet rs = stmt.executeQuery(sql);
-        return resultSetToTeamList(rs);
-    }
-    public List<Team> getTeamsWithTeamName(String teamName) throws SQLException {
-        Statement stmt = connection.createStatement();
-        String sql = "SELECT * FROM TRACK.TEAMS WHERE NAME = \"" + teamName + "\"";
-        ResultSet rs = stmt.executeQuery(sql);
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
         return resultSetToTeamList(rs);
     }
 
-    public List<Team> getTeamsWithTeamNameAndIsMensTeam(String teamName, boolean isMensTeam) throws SQLException {
-        Statement stmt = connection.createStatement();
+    public List<Team> getTeamsWithNameAndIsMensTeam(String teamName, boolean isMensTeam) throws SQLException {
+        //Statement stmt = connection.createStatement();
         //SELECT * FROM TEAMS WHERE TEAMS.NAME = 'Wis.-La Crosse' AND TEAMS.IS_MENS_TEAM = TRUE
-        String sql = "SELECT * FROM TRACK.TEAMS WHERE NAME = \"" + teamName + "\" AND IS_MENS_TEAM = " + isMensTeam;
-        ResultSet rs = stmt.executeQuery(sql);
+        String sql = "SELECT * FROM TRACK.TEAMS WHERE NAME = ? AND IS_MENS_TEAM = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, teamName);
+        stmt.setBoolean(2, isMensTeam);
+        ResultSet rs = stmt.executeQuery();
         return resultSetToTeamList(rs);
     }
 

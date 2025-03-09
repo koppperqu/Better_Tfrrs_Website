@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
@@ -23,7 +21,7 @@ public class TeamController {
     @GetMapping("/{teamName}")
     public String teamTest(@PathVariable String teamName, Model model) throws SQLException, UnsupportedEncodingException {
         String decodedTeamName = urlDecode(teamName);
-        List<Team> teamsList = teamsTable.safeGetTeamsWithName(decodedTeamName);
+        List<Team> teamsList = teamsTable.getTeamsWithName(decodedTeamName);
         TeamDTO teamDTO = new TeamDTO(teamsList.get(0).name);
         model.addAttribute("teamDTO", teamDTO);
         return "teamPage";

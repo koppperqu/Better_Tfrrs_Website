@@ -2,12 +2,13 @@ package com.BetterTfrrsWebsite;
 
 import DB.DB;
 import DBObjects.Athlete;
-import DBObjects.Event;
 import DBObjects.Team;
 import DBTables.BestsTable;
 import DBTables.TeamsTable;
 import DBTables.AthleteTable;
+import DTOs.AthleteBestDTO;
 import DTOs.AthleteDTO;
+import DTOs.BestDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class AthleteController {
     @GetMapping("/{teamName}/athletes")
     public String athletesForTeamPath(@PathVariable String teamName, @RequestParam(required = false) String isMensTeam, Model model) throws SQLException, UnsupportedEncodingException {
         String decodedTeamName = urlDecode(teamName);
-        List<Team> teamsList = teamsTable.safeGetTeamsWithName(decodedTeamName);
+        List<Team> teamsList = teamsTable.getTeamsWithName(decodedTeamName);
         if (!teamsList.isEmpty() && (Objects.equals(isMensTeam, "0") ||Objects.equals(isMensTeam, "1") || isMensTeam == null)){
             String teamNameURLSafe = urlGenerator.generateUrl(decodedTeamName);
             List<Athlete> athletesList;
@@ -59,6 +60,18 @@ public class AthleteController {
         }else {
             return "error";
         }
+    }
+
+    @GetMapping("/{teamName}/athletes/{athleteName}")
+    public String eventsForAthleteOnTeamPath(@PathVariable String teamName, @PathVariable String athleteName, Model model) throws SQLException, UnsupportedEncodingException {
+        String decodedTeamName = urlDecode(teamName);
+        String decodedAthleteName = urlDecode(athleteName);
+        Athlete athlete = athleteTable.getAthleteWithAthleteNameAndTeamName(decodedAthleteName,decodedTeamName);
+        List<AthleteBestDTO> athleteBestDTOS = bestsTable.getBestsWithAthleteID(athlete.id);
+        model.addAttribute("athleteBestDTOS", athleteBestDTOS);
+        model.addAttribute("teamName", decodedTeamName);
+        model.addAttribute("athleteName", decodedAthleteName);
+        return "athleteBests";
     }
 
 

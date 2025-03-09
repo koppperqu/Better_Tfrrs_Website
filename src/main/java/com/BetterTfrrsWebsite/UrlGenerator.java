@@ -11,10 +11,14 @@ import java.nio.charset.StandardCharsets;
 public class UrlGenerator {
 
     private String baseUrl = "";
-    //private String baseUrl = "http://localhost:8080/";
+    //private final String baseUrl = "http://localhost:8080/";
 
     public String generateUrl(String name) throws UnsupportedEncodingException {
         return baseUrl + urlEncode(name);
+    }
+
+    public String generateUrlNewParent(String name, String parent) throws UnsupportedEncodingException {
+        return baseUrl + "../" + parent + "/" + urlEncode(name);
     }
 
     private String urlEncode(String data) throws UnsupportedEncodingException {
