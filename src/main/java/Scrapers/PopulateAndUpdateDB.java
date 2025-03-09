@@ -1,9 +1,11 @@
+package Scrapers;
+
 import DB.DB;
 import DBObjects.*;
 import DBTables.*;
-import Scrapers.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.HttpStatusException;
 import java.util.concurrent.TimeUnit;
 
 import java.io.IOException;
@@ -19,7 +21,7 @@ import java.util.List;
 //other things I would like to invest some time into. With that in mind I will make this functional to the point
 //I need it to be while trying my best to maintain good practices. This will hopefully be enough to set the program
 //up for expandability in the future if I want it.
-public class Main {
+public class PopulateAndUpdateDB {
     final static String[] D3RegionLinks = {
             "https://www.tfrrs.org/leagues/1435.html", //DIII All-Ohio
             "https://www.tfrrs.org/leagues/1612.html", //DIII East Region
@@ -37,7 +39,6 @@ public class Main {
     };
     //static boolean firstTime = true;
     //Set to false for testing
-    static boolean checkD3Regions = true;
     static DB db = null;
     static AthleteTable athleteTable = null;
     static BestsTable bestsTable = null;
@@ -65,28 +66,12 @@ public class Main {
             bestsTable = new BestsTable(db);
             eventsTable = new EventsTable(db);
             teamsTable = new TeamsTable(db);
-
-
-            if (checkD3Regions){
-                //Unsure how much data we will be storing in vars currently, to be safe we will process
-                //each region then write out data after processing the region, clear the var and move to next
-
-                /* Not doing regions, pivot to get wiac setup first
-                for (String regionLink : D3RegionLinks){
-                    //Go to each of these pages to get the teams, each team page has its conference and division listed.
-                    //we will then go to each team to get the athletes' data.
-                    List<Team> regionTeams = regionScraper.scrapeRegionPage(regionLink);
-                    
-                    teamsTable.tryInsertTeams(regionTeams);
-                }*/
-                checkConferences(WIACconference);
-                //Get all teams and their athletes
-                checkTeams();
-                //Check the athletes for bests
-                checkAthletesBests();
-                System.out.println("Finished scraping");
-                checkD3Regions = false;
-            }
+            checkConferences(WIACconference);
+            //Get all teams and their athletes
+            checkTeams();
+            //Check the athletes for bests
+            checkAthletesBests();
+            System.out.println("Finished scraping");
             /* Commented out for now as it will just run everytime i start to debug.
             //Check athlete for bests every night at midnight.
             checkAthletesBests();
@@ -146,13 +131,13 @@ public class Main {
             try{
                 TimeUnit.MILLISECONDS.sleep(500);
                 document = Jsoup.connect(athlete.link).get();
-            } catch (org.jsoup.HttpStatusException e) {
+            } catch (HttpStatusException e) {
                 System.out.println("HTTP Status Code " + e.getStatusCode()+" for athlete "+athlete.name+" trying again in 10 sec");
                 //If there is an issue with the request wait 10 seconds and try again
                 TimeUnit.SECONDS.sleep(10);
                 try{
                     document = Jsoup.connect(athlete.link).get();
-                } catch (org.jsoup.HttpStatusException f) {
+                } catch (HttpStatusException f) {
                     //try waiting for 30 seconds
                     System.out.println("HTTP Status Code " + f.getStatusCode()+" for athlete "+athlete.name+" trying again in 30 sec");
                     TimeUnit.SECONDS.sleep(30);
