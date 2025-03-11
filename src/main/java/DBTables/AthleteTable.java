@@ -24,7 +24,7 @@ public class AthleteTable {
     }
 
     private void insertAthlete(Athlete athlete, int team_id) throws SQLException {
-        String sql = "INSERT INTO ATHLETES (name, link, team_id, year) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO athletes (name, link, team_id, year) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, athlete.name);
             stmt.setString(2, athlete.link);
@@ -34,13 +34,13 @@ public class AthleteTable {
         }
     }
     public List<Athlete> getAthletes() throws SQLException {
-        String sql = "SELECT * FROM ATHLETES";
+        String sql = "SELECT * FROM athletes";
         PreparedStatement stmt = connection.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         return resultSetToAthleteList(rs);
     }
     public List<Athlete> getAthleteWithAthleteNameAndTeamID(String athleteName, int team_id) throws SQLException {
-        String sql = "SELECT * FROM TRACK.ATHLETES WHERE NAME = ? AND TEAM_ID = ?";
+        String sql = "SELECT * FROM track.athletes WHERE NAME = ? AND TEAM_ID = ?";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, athleteName);
         stmt.setInt(2, team_id);
@@ -65,7 +65,7 @@ public class AthleteTable {
     }
     //Ned to get athletes for a team, with mens team = to whatever is passed either 1 0 or either
     public List<Athlete> getAthletesForTeamName(String teamName) throws SQLException {
-        String sql = "SELECT A.* FROM ATHLETES A JOIN TEAMS T WHERE T.ID = A.TEAM_ID AND T.NAME= ?";
+        String sql = "SELECT A.* FROM athletes A JOIN teams T WHERE T.ID = A.TEAM_ID AND T.NAME= ?";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, teamName);
         ResultSet rs = stmt.executeQuery();
@@ -73,7 +73,7 @@ public class AthleteTable {
     }
 
     public List<Athlete> getAthletesForTeamNameAndIsMensTeam(String teamName, boolean isMensTeam) throws SQLException {
-        String sql = "SELECT A.* FROM ATHLETES A JOIN TEAMS T WHERE T.ID = A.TEAM_ID AND T.NAME = ? AND T.IS_MENS_TEAM = ?";
+        String sql = "SELECT A.* FROM athletes A JOIN teams T WHERE T.ID = A.TEAM_ID AND T.NAME = ? AND T.IS_MENS_TEAM = ?";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, teamName);
         stmt.setBoolean(2, isMensTeam);
@@ -82,7 +82,7 @@ public class AthleteTable {
     }
 
     public Athlete getAthleteWithAthleteNameAndTeamName(String athleteName, String teamName) throws SQLException {
-        String sql = "SELECT * FROM ATHLETES A JOIN TEAMS T WHERE T.ID = A.TEAM_ID AND A.NAME = ? AND T.NAME = ?";
+        String sql = "SELECT * FROM athletes A JOIN teams T WHERE T.ID = A.TEAM_ID AND A.NAME = ? AND T.NAME = ?";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, athleteName);
         stmt.setString(2, teamName);

@@ -22,7 +22,7 @@ public class EventsTable {
     }
 
     private void insertEvent(Event event) throws SQLException {
-        String sql = "INSERT INTO EVENTS (name, short_name) VALUES (?, ?)";
+        String sql = "INSERT INTO events (name, short_name) VALUES (?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, event.name);
             stmt.setString(2, event.short_name);
@@ -30,13 +30,13 @@ public class EventsTable {
         }
     }
     public List<Event> getEvents() throws SQLException {
-        String sql = "SELECT * FROM EVENTS";
+        String sql = "SELECT * FROM events";
         PreparedStatement stmt = connection.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         return resultSetToEventList(rs);
     }
     public List<Event> getEventsWithEventShortName(String eventShortName) throws SQLException {
-        String sql = "SELECT * FROM EVENTS WHERE SHORT_NAME = ?";
+        String sql = "SELECT * FROM events WHERE SHORT_NAME = ?";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, eventShortName);
         ResultSet rs = stmt.executeQuery();

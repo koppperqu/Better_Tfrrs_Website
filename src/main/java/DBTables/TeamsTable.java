@@ -16,7 +16,7 @@ public class TeamsTable {
 
     public List<Team> getTeamsWithName(String teamName) throws SQLException {
         //select * from teams where name = "Eau Claire"
-        String sql = "SELECT * FROM TEAMS WHERE NAME = ?";
+        String sql = "SELECT * FROM teams WHERE NAME = ?";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, teamName);
         ResultSet rs = stmt.executeQuery();
@@ -41,7 +41,7 @@ public class TeamsTable {
 
     private void insertTeam(Team team, int conference_id) throws SQLException {
         //String sql = "INSERT INTO track.teams (name,link,is_Mens_Team,conference_id) VALUES (\"" + team.name + "\",\""+ team.link + "\",\"" + team.isMensTeam + "\"," + conference_id + ")";
-        String sql = "INSERT INTO TEAMS (name, link, conference_id, is_mens_team) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO teams (name, link, conference_id, is_mens_team) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, team.name);
             stmt.setString(2, team.link);
@@ -51,7 +51,7 @@ public class TeamsTable {
         }
     }
     public List<Team> getTeams() throws SQLException {
-        String sql = "SELECT * FROM TEAMS";
+        String sql = "SELECT * FROM teams";
         PreparedStatement stmt = connection.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         return resultSetToTeamList(rs);
@@ -60,7 +60,7 @@ public class TeamsTable {
     public List<Team> getTeamsWithNameAndIsMensTeam(String teamName, boolean isMensTeam) throws SQLException {
         //Statement stmt = connection.createStatement();
         //SELECT * FROM TEAMS WHERE TEAMS.NAME = 'Wis.-La Crosse' AND TEAMS.IS_MENS_TEAM = TRUE
-        String sql = "SELECT * FROM TRACK.TEAMS WHERE NAME = ? AND IS_MENS_TEAM = ?";
+        String sql = "SELECT * FROM track.teams WHERE NAME = ? AND IS_MENS_TEAM = ?";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, teamName);
         stmt.setBoolean(2, isMensTeam);
