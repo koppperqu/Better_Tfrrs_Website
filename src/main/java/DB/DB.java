@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DB {
     public Connection connection;
 
-    final static String url = "jdbc:mysql://localhost:3306/track";
+    final static String url = "jdbc:mysql://localhost:3306/track?autoReconnect=true&maxReconnects=3&connectTimeout=5000";
     final static String user = System.getenv("dbuser");
     final static String password = System.getenv("dbpass");
     public DB() {
