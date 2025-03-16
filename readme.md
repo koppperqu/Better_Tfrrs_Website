@@ -1,3 +1,9 @@
+Java - OpenJDK 23.0.1
+
+BetterTfrrsWebsite.jar
+This is used to run the website, takes no arguments, ran with java -jar BetterTfrrsWebsite.jar 
+BetterTfrrsDB
+
 <h1>The Goal</h1>
 I made a previous version of this website using Python and the Django framework.
 There is an issue with how the data was being added to the database causing
