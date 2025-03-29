@@ -1,4 +1,4 @@
-package DBTables;
+package dbtables;
 
 import DB.DB;
 import DBObjects.Athlete;
