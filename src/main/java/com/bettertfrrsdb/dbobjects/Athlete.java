@@ -1,6 +1,9 @@
 package com.bettertfrrsdb.dbobjects;
 
+@Entity
 public class Athlete {
+    @Id
+    @GeneratedValue
     public int id;
     public String name;
     public String link;

@@ -1,4 +1,4 @@
-package com.BetterTfrrsWebsite;
+package com.bettertfrrswebsite;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
