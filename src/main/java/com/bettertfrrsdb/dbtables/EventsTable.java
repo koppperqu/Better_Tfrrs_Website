@@ -1,7 +1,7 @@
-package DBTables;
+package com.bettertfrrsdb.dbtables;
 
-import DB.DB;
-import DBObjects.Event;
+import com.bettertfrrsdb.DB;
+import com.bettertfrrsdb.dbobjects.Event;
 
 import java.sql.*;
 import java.util.ArrayList;

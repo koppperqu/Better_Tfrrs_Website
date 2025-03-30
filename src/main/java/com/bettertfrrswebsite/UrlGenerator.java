@@ -1,6 +1,5 @@
-package com.BetterTfrrsWebsite;
+package com.bettertfrrswebsite;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;

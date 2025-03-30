@@ -1,6 +1,6 @@
-package Scrapers;
+package com.bettertfrrsscraper;
 
-import DBObjects.Athlete;
+import com.bettertfrrsdb.dbobjects.Athlete;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

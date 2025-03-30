@@ -1,4 +1,4 @@
-package DTOs;
+package com.bettertfrrswebsite.dtos;
 
 import java.io.UnsupportedEncodingException;
 

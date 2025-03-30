@@ -1,4 +1,4 @@
-package DTOs;
+package com.bettertfrrswebsite.dtos;
 
 public class BestDTO {
     public String mark;

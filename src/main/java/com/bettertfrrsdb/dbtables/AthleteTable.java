@@ -1,8 +1,7 @@
-package dbtables;
+package com.bettertfrrsdb.dbtables;
 
-import DB.DB;
-import DBObjects.Athlete;
-
+import com.bettertfrrsdb.DB;
+import com.bettertfrrsdb.dbobjects.Athlete;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

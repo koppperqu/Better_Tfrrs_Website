@@ -1,11 +1,8 @@
-package DTOs;
-import com.BetterTfrrsWebsite.UrlGenerator;
-import org.springframework.beans.factory.annotation.Value;
+package com.bettertfrrswebsite.dtos;
+import com.bettertfrrswebsite.UrlGenerator;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 @Component
 public class TeamDTO {

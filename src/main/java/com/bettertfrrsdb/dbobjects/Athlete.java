@@ -1,4 +1,4 @@
-package DBObjects;
+package com.bettertfrrsdb.dbobjects;
 
 public class Athlete {
     public int id;

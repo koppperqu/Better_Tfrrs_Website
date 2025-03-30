@@ -1,8 +1,8 @@
-package Scrapers;
+package com.bettertfrrsscraper;
 
-import DBObjects.Best;
-import DBObjects.Event;
-import DBTables.EventsTable;
+import com.bettertfrrsdb.dbobjects.Best;
+import com.bettertfrrsdb.dbobjects.Event;
+import com.bettertfrrsdb.dbtables.EventsTable;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

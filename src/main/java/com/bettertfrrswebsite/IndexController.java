@@ -1,15 +1,12 @@
-package com.BetterTfrrsWebsite;
+package com.bettertfrrswebsite;
 
-import DB.DB;
-import DBObjects.Team;
-import DBTables.TeamsTable;
+import com.bettertfrrsdb.DB;
+import com.bettertfrrsdb.dbtables.TeamsTable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
-import java.util.List;
 
 @Controller
 public class IndexController {

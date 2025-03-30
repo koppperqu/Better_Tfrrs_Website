@@ -1,4 +1,4 @@
-package DB;
+package com.bettertfrrsdb;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

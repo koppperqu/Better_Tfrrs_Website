@@ -1,8 +1,8 @@
-package Scrapers;
+package com.bettertfrrsscraper;
 
-import DB.DB;
-import DBObjects.*;
-import DBTables.*;
+import com.bettertfrrsdb.DB;
+import com.bettertfrrsdb.dbobjects.*;
+import com.bettertfrrsdb.dbtables.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.HttpStatusException;

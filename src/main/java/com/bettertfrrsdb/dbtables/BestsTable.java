@@ -1,10 +1,10 @@
-package DBTables;
+package com.bettertfrrsdb.dbtables;
 
-import DB.DB;
-import DBObjects.Best;
-import DTOs.AthleteBestDTO;
-import DTOs.BestDTO;
-import DTOs.EventBestDTO;
+import com.bettertfrrsdb.DB;
+import com.bettertfrrsdb.dbobjects.Best;
+import com.bettertfrrswebsite.dtos.AthleteBestDTO;
+import com.bettertfrrswebsite.dtos.BestDTO;
+import com.bettertfrrswebsite.dtos.EventBestDTO;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.*;

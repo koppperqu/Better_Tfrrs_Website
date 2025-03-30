@@ -1,14 +1,9 @@
-package com.BetterTfrrsWebsite;
+package com.bettertfrrswebsite;
 
-import DB.DB;
-import DBObjects.Event;
-import DBObjects.Team;
-import DBTables.BestsTable;
-import DBTables.EventsTable;
-import DBTables.TeamsTable;
-import DTOs.BestDTO;
-import DTOs.EventBestDTO;
-import DTOs.EventDTO;
+import com.bettertfrrsdb.DB;
+import com.bettertfrrsdb.dbobjects.*;
+import com.bettertfrrsdb.dbtables.*;
+import com.bettertfrrswebsite.dtos.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

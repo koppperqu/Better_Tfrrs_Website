@@ -1,6 +1,6 @@
-package DTOs;
+package com.bettertfrrswebsite.dtos;
 
-import com.BetterTfrrsWebsite.UrlGenerator;
+import com.bettertfrrswebsite.UrlGenerator;
 
 import java.io.UnsupportedEncodingException;
 

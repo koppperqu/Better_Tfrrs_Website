@@ -1,4 +1,4 @@
-package com.BetterTfrrsWebsite;
+package com.bettertfrrswebsite;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

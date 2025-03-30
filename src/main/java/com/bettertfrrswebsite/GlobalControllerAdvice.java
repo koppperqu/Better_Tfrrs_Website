@@ -1,9 +1,9 @@
-package com.BetterTfrrsWebsite;
+package com.bettertfrrswebsite;
 
-import DB.DB;
-import DBObjects.Team;
-import DBTables.TeamsTable;
-import DTOs.TeamDTO;
+import com.bettertfrrsdb.DB;
+import com.bettertfrrsdb.dbobjects.Team;
+import com.bettertfrrsdb.dbtables.TeamsTable;
+import com.bettertfrrswebsite.dtos.TeamDTO;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
