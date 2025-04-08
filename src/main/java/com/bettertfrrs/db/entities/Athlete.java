@@ -1,10 +1,10 @@
-package com.bettertfrrs.db.models;
+package com.bettertfrrs.db.entities;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Teams")
-public class Team {
+@Table(name = "Athletes")
+public class Athlete {
     @Id
     @GeneratedValue
     @Column
@@ -13,30 +13,31 @@ public class Team {
     public String name;
     @Column
     public String link;
+    @ManyToOne
+    @JoinColumn(name = "teamId", referencedColumnName = "id")
+    public Team team;
     @Column
-    public int conferenceId;
-    @Column
-    public boolean isMensTeam;
+    public String grade;
 
-    public Team() {
+    public Athlete() {
     }
 
-    public Team(int id, String name, String link, int conferenceId, boolean isMensTeam) {
+    public Athlete(int id, String name, String link, Team team, String grade) {
         this.id = id;
         this.name = name;
         this.link = link;
-        this.conferenceId = conferenceId;
-        this.isMensTeam = isMensTeam;
+        this.team = team;
+        this.grade = grade;
     }
 
     @Override
     public String toString() {
-        return "Team{" +
+        return "Athlete{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", link='" + link + '\'' +
-                ", conferenceId=" + conferenceId +
-                ", isMensTeam=" + isMensTeam +
+                ", teamId=" + team.name +
+                ", grade='" + grade + '\'' +
                 '}';
     }
 
@@ -64,19 +65,19 @@ public class Team {
         this.link = link;
     }
 
-    public int getConferenceId() {
-        return conferenceId;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setConferenceId(int conferenceId) {
-        this.conferenceId = conferenceId;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
-    public boolean isMensTeam() {
-        return isMensTeam;
+    public String getGrade() {
+        return grade;
     }
 
-    public void setMensTeam(boolean mensTeam) {
-        isMensTeam = mensTeam;
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }

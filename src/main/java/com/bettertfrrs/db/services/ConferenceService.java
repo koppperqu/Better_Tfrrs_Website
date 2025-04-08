@@ -1,6 +1,6 @@
 package com.bettertfrrs.db.services;
 
-import com.bettertfrrs.db.models.Conference;
+import com.bettertfrrs.db.entities.Conference;
 import com.bettertfrrs.db.repositories.ConferenceRepository;
 import org.springframework.stereotype.Service;
 

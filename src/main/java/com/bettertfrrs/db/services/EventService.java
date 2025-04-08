@@ -1,6 +1,6 @@
 package com.bettertfrrs.db.services;
 
-import com.bettertfrrs.db.models.Event;
+import com.bettertfrrs.db.entities.Event;
 import com.bettertfrrs.db.repositories.EventRepository;
 import org.springframework.stereotype.Service;
 

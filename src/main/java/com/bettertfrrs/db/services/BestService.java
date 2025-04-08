@@ -1,9 +1,13 @@
 package com.bettertfrrs.db.services;
 
-import com.bettertfrrs.db.models.Best;
+import com.bettertfrrs.db.entities.Best;
+import com.bettertfrrs.db.entities.BestID;
 import com.bettertfrrs.db.repositories.BestRepository;
+import com.bettertfrrs.website.dtos.AthleteBestDTO;
+import com.bettertfrrs.website.dtos.BestDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +24,8 @@ public class BestService {
         return BestRepository.findAll();
     }
 
-    // Get an Best by ID
-    public Optional<Best> getBestById(int id) {
+    // Get a Best by ID
+    public Optional<Best> getBestById(BestID id) {
         return BestRepository.findById(id);
     }
 
@@ -29,5 +33,14 @@ public class BestService {
     public Best createBest(String name) {
         Best Best = new Best();
         return BestRepository.save(Best);
+    }
+
+    public List<AthleteBestDTO> getBestsByAthleteID(int athleteID) {
+        List<Best> bests = BestRepository.findByAthleteID(athleteID);
+        List<AthleteBestDTO> athleteBestDTOs = new ArrayList<>();
+        for (Best best : bests) {
+            athleteBestDTOs.add(new AthleteBestDTO(best.mark, best.event.name, best.link, best.event.id, best.athlete.team.id));
+        }
+        return athleteBestDTOs;
     }
 }

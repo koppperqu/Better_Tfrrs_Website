@@ -1,6 +1,6 @@
 package com.bettertfrrs.db.services;
 
-import com.bettertfrrs.db.models.Team;
+import com.bettertfrrs.db.entities.Team;
 import com.bettertfrrs.db.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class TeamService {
         return teamRepository.findAll();
     }
 
-    // Get an team by ID
+    // Get a team by ID
     public Optional<Team> getTeamById(int id) {
         return teamRepository.findById(id);
     }

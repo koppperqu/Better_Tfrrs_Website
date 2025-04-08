@@ -1,6 +1,6 @@
 package com.bettertfrrs.db.services;
 
-import com.bettertfrrs.db.models.Division;
+import com.bettertfrrs.db.entities.Division;
 import com.bettertfrrs.db.repositories.DivisionRepository;
 import org.springframework.stereotype.Service;
 

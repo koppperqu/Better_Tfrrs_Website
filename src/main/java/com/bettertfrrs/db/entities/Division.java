@@ -1,10 +1,10 @@
-package com.bettertfrrs.db.models;
+package com.bettertfrrs.db.entities;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Athletes")
-public class Athlete {
+@Table(name = "Divisions")
+public class Division {
     @Id
     @GeneratedValue
     @Column
@@ -13,30 +13,22 @@ public class Athlete {
     public String name;
     @Column
     public String link;
-    @Column
-    public int teamId;
-    @Column
-    public String grade;
 
-    public Athlete() {
+    public Division() {
     }
 
-    public Athlete(int id, String name, String link, int teamId, String grade) {
+    public Division(int id, String name, String link) {
         this.id = id;
         this.name = name;
         this.link = link;
-        this.teamId = teamId;
-        this.grade = grade;
     }
 
     @Override
     public String toString() {
-        return "Athlete{" +
+        return "Division{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", link='" + link + '\'' +
-                ", teamId=" + teamId +
-                ", grade='" + grade + '\'' +
                 '}';
     }
 
@@ -62,21 +54,5 @@ public class Athlete {
 
     public void setLink(String link) {
         this.link = link;
-    }
-
-    public int getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
-
-    public String getGrade() {
-        return grade;
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade;
     }
 }

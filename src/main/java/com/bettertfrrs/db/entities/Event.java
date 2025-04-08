@@ -1,4 +1,4 @@
-package com.bettertfrrs.db.models;
+package com.bettertfrrs.db.entities;
 
 import jakarta.persistence.*;
 
