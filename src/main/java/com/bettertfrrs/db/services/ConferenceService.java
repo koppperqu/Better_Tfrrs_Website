@@ -31,4 +31,18 @@ public class ConferenceService {
         conference.setName(name);
         return conferenceRepository.save(conference);
     }
+
+    public Conference createOrUpdate(Conference conference) {
+        Conference conferenceInDB = getConferenceByLink(conference.link);
+        if (conferenceInDB != null) {
+            conferenceInDB.setName(conference.name);
+            return conferenceRepository.save(conferenceInDB);
+        }else {
+            return conferenceRepository.save(conference);
+        }
+    }
+
+    private Conference getConferenceByLink(String link) {
+        return conferenceRepository.findByLink(link);
+    }
 }

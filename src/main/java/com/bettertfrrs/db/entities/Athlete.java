@@ -11,7 +11,7 @@ public class Athlete {
     public int id;
     @Column
     public String name;
-    @Column
+    @Column(unique = true)
     public String link;
     @ManyToOne
     @JoinColumn(name = "teamId", referencedColumnName = "id")

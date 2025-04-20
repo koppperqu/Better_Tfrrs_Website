@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AthleteRepository extends JpaRepository<Athlete,Integer> {
 
-    List<Athlete> findByTeamID(int teamID);
+    List<Athlete> findByTeamID(int teamId);
 
     List<Athlete> findByTeamIDAndIsMensTeam(int teamID, Boolean isMensTeam);
 }
