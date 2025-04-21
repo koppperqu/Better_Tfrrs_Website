@@ -32,25 +32,26 @@ public class AthleteController {
         this.bestService = bestService;
     }
 
-    @GetMapping("/{teamID}/athletes")
-    public String athletesForTeam(@PathVariable int teamID, @RequestParam(required = false) Boolean isMensTeam, Model model) throws UnsupportedEncodingException {
-        List<AthleteDTO> athleteDTOs = athleteService.getAthletesByTeamID(teamID, isMensTeam);
-        Optional<Team> team = teamService.getTeamById(teamID);
-        if (!athleteDTOs.isEmpty() & team.isPresent()){
-            model.addAttribute("teamName", team.get().name);
-            model.addAttribute("athleteDTOs", athleteDTOs);
-            return "teamAthletes";
-        }
-        else {
-            return "redirect:/error";
-        }
+    @GetMapping("/{teamId}/athletes")
+    public String athletesForTeam(@PathVariable int teamId, @RequestParam(required = false) Boolean isMensTeam, Model model) throws UnsupportedEncodingException {
+//        List<AthleteDTO> athleteDTOs = athleteService.getAthletesByTeamId(teamId, isMensTeam);
+//        Optional<Team> team = teamService.getTeamById(teamId);
+//        if (!athleteDTOs.isEmpty() & team.isPresent()){
+//            model.addAttribute("teamName", team.get().name);
+//            model.addAttribute("athleteDTOs", athleteDTOs);
+//            return "teamAthletes";
+//        }
+//        else {
+//            return "redirect:/error";
+//        }
+        return null;
     }
 
-    @GetMapping("/{teamID}/athletes/{athleteID}")
-    public String bestsForAthlete(@PathVariable int teamID, @PathVariable int athleteID, Model model) {
-        Optional<Athlete> athlete = athleteService.getAthleteById(athleteID);
-        Optional<Team> team = teamService.getTeamById(teamID);
-        List<AthleteBestDTO> athleteBestDTOs = bestService.getBestsByAthleteID(athleteID);
+    @GetMapping("/{teamId}/athletes/{athleteId}")
+    public String bestsForAthlete(@PathVariable int teamId, @PathVariable int athleteId, Model model) {
+        Optional<Athlete> athlete = athleteService.getAthleteById(athleteId);
+        Optional<Team> team = teamService.getTeamById(teamId);
+        List<AthleteBestDTO> athleteBestDTOs = bestService.getBestsByAthleteId(athleteId);
         if (team.isPresent() & athlete.isPresent()) {
             model.addAttribute("athleteBestDTOs", athleteBestDTOs);
             model.addAttribute("teamName", team.get().name);

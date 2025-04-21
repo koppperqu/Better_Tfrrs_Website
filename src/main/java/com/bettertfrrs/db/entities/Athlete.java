@@ -18,13 +18,15 @@ public class Athlete {
     public Team team;
     @Column
     public String grade;
+//    @Column
+//    public boolean isMensTeam;
 
     public Athlete() {
     }
 
-    public Athlete(int id, String name, String link, Team team, String grade) {
-        this.id = id;
-        this.name = name;
+//    public Athlete(String name, String link, Team team, String grade, boolean isMensTeam) {
+    public Athlete(String name, String link, Team team, String grade) {
+            this.name = name;
         this.link = link;
         this.team = team;
         this.grade = grade;
@@ -80,4 +82,12 @@ public class Athlete {
     public void setGrade(String grade) {
         this.grade = grade;
     }
+//
+//    public boolean isMensTeam() {
+//        return isMensTeam;
+//    }
+//
+//    public void setMensTeam(boolean mensTeam) {
+//        isMensTeam = mensTeam;
+//    }
 }

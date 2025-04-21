@@ -1,7 +1,7 @@
 package com.bettertfrrs.db.services;
 
 import com.bettertfrrs.db.entities.Best;
-import com.bettertfrrs.db.entities.BestID;
+import com.bettertfrrs.db.entities.BestId;
 import com.bettertfrrs.db.repositories.BestRepository;
 import com.bettertfrrs.website.dtos.AthleteBestDTO;
 import com.bettertfrrs.website.dtos.BestDTO;
@@ -24,8 +24,8 @@ public class BestService {
         return BestRepository.findAll();
     }
 
-    // Get a Best by ID
-    public Optional<Best> getBestById(BestID id) {
+    // Get a Best by Id
+    public Optional<Best> getBestById(BestId id) {
         return BestRepository.findById(id);
     }
 
@@ -35,8 +35,8 @@ public class BestService {
         return BestRepository.save(Best);
     }
 
-    public List<AthleteBestDTO> getBestsByAthleteID(int athleteID) {
-        List<Best> bests = BestRepository.findByAthleteID(athleteID);
+    public List<AthleteBestDTO> getBestsByAthleteId(int athleteId) {
+        List<Best> bests = BestRepository.findByAthleteId(athleteId);
         List<AthleteBestDTO> athleteBestDTOs = new ArrayList<>();
         for (Best best : bests) {
             athleteBestDTOs.add(new AthleteBestDTO(best.mark, best.event.name, best.link, best.event.id, best.athlete.team.id));

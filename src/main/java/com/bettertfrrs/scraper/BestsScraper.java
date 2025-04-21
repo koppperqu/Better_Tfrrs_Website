@@ -2,7 +2,6 @@
 //
 //import com.bettertfrrs.db.entities.Best;
 //import com.bettertfrrs.db.entities.Event;
-//import com.bettertfrrs.db.dbtables.EventsTable;
 //import org.jsoup.nodes.Document;
 //import org.jsoup.nodes.Element;
 //import org.jsoup.select.Elements;
@@ -15,7 +14,6 @@
 //    public List<String> eventShortNames;
 //    public List<String> bestLinks;
 //    public List<String> bestMarks;
-//    private EventsTable eventsTable;
 //    //Bests table has id = all_bests and class = table bests
 //    public List<Best> scrapeAthletePage(Document doc, EventsTable eventsTable) throws SQLException {
 //        //Need to pass in events table to be able to get event id

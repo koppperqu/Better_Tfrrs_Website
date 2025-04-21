@@ -1,5 +1,6 @@
 package com.bettertfrrs.db.services;
 
+import com.bettertfrrs.db.entities.Conference;
 import com.bettertfrrs.db.entities.Team;
 import com.bettertfrrs.db.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,21 @@ public class TeamService {
         Team team = new Team();
         team.setName(name);
         return teamRepository.save(team);
+    }
+
+    public Team createOrUpdate(Team team) {
+        Team teamInDB = getTeamByLink(team.link);
+        if (teamInDB != null) {
+            teamInDB.setName(team.name);
+            teamInDB.setConferenceId(team.conferenceId);
+            teamInDB.setMensTeam(team.isMensTeam);
+            return teamRepository.save(teamInDB);
+        }else {
+            return teamRepository.save(team);
+        }
+    }
+
+    private Team getTeamByLink(String link) {
+        return teamRepository.findByLink(link);
     }
 }

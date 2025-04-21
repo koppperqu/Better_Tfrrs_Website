@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Bests")
-@IdClass(BestID.class)
+@IdClass(BestId.class)
 public class Best {
 
     @Id
@@ -16,12 +16,13 @@ public class Best {
     private int eventId;
 
     @ManyToOne
+    @JoinColumn(name = "athleteId", referencedColumnName = "id")
+    public Athlete athlete;
+
+    @ManyToOne
     @JoinColumn(name = "eventId", referencedColumnName = "id")
     public Event event;
 
-    @ManyToOne
-    @JoinColumn(name = "athleteId", referencedColumnName = "id")
-    public Athlete athlete;
     @Column
     public String mark;
     @Column

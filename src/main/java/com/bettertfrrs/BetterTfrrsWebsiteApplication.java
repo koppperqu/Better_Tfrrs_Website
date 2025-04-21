@@ -4,7 +4,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
-import com.bettertfrrs.scraper.PopulateAndUpdateDB;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootApplication(exclude = ErrorMvcAutoConfiguration.class)

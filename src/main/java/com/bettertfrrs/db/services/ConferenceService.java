@@ -20,7 +20,7 @@ public class ConferenceService {
         return conferenceRepository.findAll();
     }
 
-    // Get an conference by ID
+    // Get a conference by ID
     public Optional<Conference> getConferenceById(int id) {
         return conferenceRepository.findById(id);
     }

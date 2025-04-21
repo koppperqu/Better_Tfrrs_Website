@@ -22,6 +22,7 @@ public class Team {
     }
 
     public Team(int id, String name, String link, int conferenceId, boolean isMensTeam) {
+//    public Team(int id, String name, String link, int conferenceId) {
         this.id = id;
         this.name = name;
         this.link = link;

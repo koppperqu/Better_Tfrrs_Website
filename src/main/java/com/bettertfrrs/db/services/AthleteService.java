@@ -1,6 +1,7 @@
 package com.bettertfrrs.db.services;
 
 import com.bettertfrrs.db.entities.Athlete;
+import com.bettertfrrs.db.entities.Conference;
 import com.bettertfrrs.db.repositories.AthleteRepository;
 import com.bettertfrrs.website.dtos.AthleteDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class AthleteService {
         return athleteRepository.findAll();
     }
 
-    // Get an athlete by ID
+    // Get an athlete by Id
     public Optional<Athlete> getAthleteById(int id) {
         return athleteRepository.findById(id);
     }
@@ -37,22 +38,38 @@ public class AthleteService {
         return athleteRepository.save(athlete);
     }
 
-    public List<AthleteDTO> getAthletesByTeamID(int teamID, Boolean isMensTeam) throws UnsupportedEncodingException {
+//    public List<AthleteDTO> getAthletesByTeamId(int teamId, Boolean isMensTeam) throws UnsupportedEncodingException {
+//
+//        List<Athlete> athletes;
+//        if (isMensTeam == null){
+//            athletes = athleteRepository.findByTeamId(teamId);
+//        }else {
+////            athletes = athleteRepository.findByTeamIdAndIsMensTeam(teamId,isMensTeam);
+//        }
+//
+//        List<AthleteDTO> athleteDTOs = new ArrayList<>();
+//        if (!athletes.isEmpty()) {
+//            for (Athlete athlete : athletes) {
+//                athleteDTOs.add(new AthleteDTO(athlete.name, athlete.id, teamId));
+//            }
+//        }
+//
+//        return athleteDTOs;
+//    }
 
-        List<Athlete> athletes;
-        if (isMensTeam == null){
-            athletes = athleteRepository.findByTeamID(teamID);
+    public Athlete createOrUpdate(Athlete athlete) {
+        Athlete athleteInDB = getAthleteByLink(athlete.link);
+        if (athleteInDB != null) {
+            athleteInDB.setName(athlete.name);
+            athleteInDB.setTeam(athlete.team);
+            athleteInDB.setGrade(athlete.grade);
+            return athleteRepository.save(athleteInDB);
         }else {
-            athletes = athleteRepository.findByTeamIDAndIsMensTeam(teamID,isMensTeam);
+            return athleteRepository.save(athlete);
         }
+    }
 
-        List<AthleteDTO> athleteDTOs = new ArrayList<>();
-        if (!athletes.isEmpty()) {
-            for (Athlete athlete : athletes) {
-                athleteDTOs.add(new AthleteDTO(athlete.name, athlete.id, teamID));
-            }
-        }
-
-        return athleteDTOs;
+    private Athlete getAthleteByLink(String link) {
+        return athleteRepository.findByLink(link);
     }
 }

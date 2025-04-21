@@ -8,7 +8,7 @@ public class Conference {
     @Id
     @GeneratedValue
     @Column
-    public int id;
+    public Integer id;
     @Column
     public String name;
     @Column(unique = true)
