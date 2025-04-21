@@ -1,12 +1,14 @@
 package com.bettertfrrs;
 
 import com.bettertfrrs.db.entities.Athlete;
+import com.bettertfrrs.db.entities.Best;
 import com.bettertfrrs.db.entities.Conference;
 import com.bettertfrrs.db.entities.Team;
 import com.bettertfrrs.db.services.*;
 import com.bettertfrrs.scraper.AthleteScraper;
 import com.bettertfrrs.scraper.ConferenceScraper;
 import com.bettertfrrs.scraper.TeamScraper;
+import com.bettertfrrs.scraper.BestsScraper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
@@ -28,7 +30,7 @@ public class PopulateAndUpdateDB {
     private final ConferenceScraper conferenceScraper = new ConferenceScraper();
     private final TeamScraper teamScraper = new TeamScraper();
     private final AthleteScraper athleteScraper = new AthleteScraper();
-//    private final BestsScraper bestsScraper = new BestsScraper();
+    private final BestsScraper bestsScraper;
 
     private final String[] WIACandAmericaRivers = {
             "https://www.tfrrs.org/leagues/1420.html", //WIAC
@@ -57,6 +59,8 @@ public class PopulateAndUpdateDB {
         this.conferenceService = conferenceService;
         this.eventService = eventService;
         this.teamService = teamService;
+
+        this.bestsScraper = new BestsScraper(eventService);
     }
 
     public void run() throws InterruptedException {
@@ -100,7 +104,7 @@ public class PopulateAndUpdateDB {
                     System.out.printf("Team (%d/%d): %s%n", i + 1, teamLinks.size(), team.name);
                     System.out.printf("Athlete (%d/%d): %s%n", j + 1, athleteLinks.size(), athlete.name);
 
-                    //processAthleteBests(athletePage);
+                    processAthleteBests(athletePage, athlete);
                 }
             }
         }
@@ -147,6 +151,13 @@ public class PopulateAndUpdateDB {
     private Athlete processAthlete(Document athletePage, Team team) {
         Athlete athleteFromHtml = athleteScraper.scrapeAthlete(athletePage,team);
         return athleteService.createOrUpdate(athleteFromHtml);
+    }
+
+    private void processAthleteBests(Document athletePage, Athlete athlete) {
+        List<Best> bestsFromHtml = bestsScraper.scrapeBests(athletePage,athlete);
+        for(Best bestFromHtml : bestsFromHtml){
+            Best best = bestService.createOrUpdateBest(bestFromHtml);
+        }
     }
 
 }

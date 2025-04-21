@@ -12,15 +12,15 @@ public class Event {
     @Column
     public String name;
     @Column
-    public String short_name;
+    public String shortName;
 
     public Event() {
     }
 
-    public Event(int id, String name, String short_name) {
+    public Event(int id, String name, String shortName) {
         this.id = id;
         this.name = name;
-        this.short_name = short_name;
+        this.shortName = shortName;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class Event {
         return "Event{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", short_name='" + short_name + '\'' +
+                ", short_name='" + shortName + '\'' +
                 '}';
     }
 
@@ -48,11 +48,11 @@ public class Event {
         this.name = name;
     }
 
-    public String getShort_name() {
-        return short_name;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setShort_name(String short_name) {
-        this.short_name = short_name;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }

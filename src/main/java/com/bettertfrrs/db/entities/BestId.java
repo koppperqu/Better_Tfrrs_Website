@@ -5,15 +5,15 @@ import java.util.Objects;
 
 public class BestId implements Serializable {
 
-    private int athleteId;
-    private int eventId;
+    private int athlete;
+    private int event;
 
     public BestId (){
     }
 
     public BestId(int athleteId, int eventId) {
-        this.athleteId = athleteId;
-        this.eventId = eventId;
+        this.athlete = athleteId;
+        this.event = eventId;
     }
 
     @Override
@@ -21,11 +21,11 @@ public class BestId implements Serializable {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         BestId bestId = (BestId) obj;
-        return eventId == bestId.eventId && athleteId == bestId.athleteId;
+        return event == bestId.event && athlete == bestId.athlete;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventId, athleteId);
+        return Objects.hash(event, athlete);
     }
 }

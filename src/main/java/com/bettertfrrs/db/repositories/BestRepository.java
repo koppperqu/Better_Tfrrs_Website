@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BestRepository extends JpaRepository<Best, BestId> {
-    List<Best> findByAthleteId(int athleteId);
+    List<Best> findByAthleteId(Integer athleteId);
+
+    Best findByAthleteIdAndEventId(Integer athleteId, Integer eventId);
 }

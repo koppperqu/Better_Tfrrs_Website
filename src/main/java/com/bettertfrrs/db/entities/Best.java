@@ -7,18 +7,18 @@ import jakarta.persistence.*;
 @IdClass(BestId.class)
 public class Best {
 
+//    @Id
+//    @Column(name = "athleteId")
+//    private int athleteId;
+//
+//    @Id
+//    @Column(name = "eventId")
+//    private int eventId;
     @Id
-    @Column(name = "athleteId")
-    private int athleteId;
-
-    @Id
-    @Column(name = "eventId")
-    private int eventId;
-
     @ManyToOne
     @JoinColumn(name = "athleteId", referencedColumnName = "id")
     public Athlete athlete;
-
+    @Id
     @ManyToOne
     @JoinColumn(name = "eventId", referencedColumnName = "id")
     public Event event;
