@@ -15,10 +15,8 @@
 //
 //@ControllerAdvice
 //public class GlobalControllerAdvice {
-//    DB db = new DB();
-//    TeamsTable teamsTable = new TeamsTable(db);
 //    @ModelAttribute("globalLinks")
-//    public List<TeamDTO> globalLinks(Model model) throws SQLException, UnsupportedEncodingException {
+//    public List<TeamDTO> globalLinks(Model model){
 //        List<Team> teamsList = teamsTable.getTeams();
 //        List<TeamDTO> teamsDTOList = new ArrayList<>();
 //        TeamDTO tempTeamDTO = null;

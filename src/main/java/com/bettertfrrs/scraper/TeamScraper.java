@@ -13,10 +13,11 @@ public class TeamScraper{
 
     public Team scrapeTeam(Document teamPage, Integer conferenceId) {
         Team team = new Team();
-        team.name = teamPage.getElementById("team-name").text();
+        team.setName(teamPage.getElementById("team-name").text());
         team.conferenceId = conferenceId;
         team.link = teamPage.location();
-        team.isMensTeam = team.link.contains("_m_");
+        team.hasMen = team.link.contains("_m_");
+        team.hasWomen = team.link.contains("_f_");
         return team;
     }
 

@@ -2,6 +2,7 @@ package com.bettertfrrs.db.services;
 
 import com.bettertfrrs.db.entities.Best;
 import com.bettertfrrs.db.entities.BestId;
+import com.bettertfrrs.db.entities.Event;
 import com.bettertfrrs.db.repositories.BestRepository;
 import com.bettertfrrs.website.dtos.AthleteBestDTO;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,21 @@ public class BestService {
 
     private Best getBestByAthleteIdAndEventId(Integer athleteId, Integer eventId) {
         return bestRepository.findByAthleteIdAndEventId(athleteId, eventId);
+    }
+
+    public Optional<List<Event>> getDistinctEventsForTeamAndIsMensTeam(int id, Boolean isMensTeam) {
+        return bestRepository.getDistinctEventsForTeamAndIsMensTeam(id, isMensTeam);
+    }
+
+    public Optional<List<Event>> getDistinctEventsForTeam(int id) {
+        return bestRepository.getDistinctEventsForTeam(id);
+    }
+
+    public Optional<List<Best>> getBestsForEventAndForTeam(int eventId, int teamId) {
+        return bestRepository.findByEventIdAndAthleteTeamId(eventId,teamId);
+    }
+
+    public Optional<List<Best>> getBestsForEventAndForTeamAndIsMensTeam(int eventId, int teamId, boolean isMensTeam) {
+        return bestRepository.findByEventIdAndAthleteTeamIdAndAthleteIsMan(eventId,teamId,isMensTeam);
     }
 }

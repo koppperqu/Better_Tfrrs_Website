@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html th:replace="~{base :: base(~{::content})}" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+  <div class="text-center">
+    <h2 class="col-12 display-4 custom-background p-2 rounded-top" th:text="${conferenceDTO.name}"></h2>
+    <div class="row justify-content-center">
+      <div class="col-4 col-md-3 m-1 p-0" th:each="teamName, eachStatus : ${conferenceDTO.teamNames}">
+        <a class = "text-decoration-none" th:href="${conferenceDTO.teamURLs[eachStatus.index]}">
+          <h3 class = "alt-custom-background rounded p-1 w-100" th:text="${teamName}"></h3>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+

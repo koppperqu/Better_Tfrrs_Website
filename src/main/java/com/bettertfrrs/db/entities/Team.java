@@ -16,18 +16,21 @@ public class Team {
     @Column
     public int conferenceId;
     @Column
-    public boolean isMensTeam;
+    public boolean hasMen;
+    @Column
+    public boolean hasWomen;
 
     public Team() {
     }
 
-    public Team(int id, String name, String link, int conferenceId, boolean isMensTeam) {
+    public Team(int id, String name, String link, int conferenceId, boolean hasMen, boolean hasWomen) {
 //    public Team(int id, String name, String link, int conferenceId) {
         this.id = id;
         this.name = name;
         this.link = link;
         this.conferenceId = conferenceId;
-        this.isMensTeam = isMensTeam;
+        this.hasMen = hasMen;
+        this.hasWomen = hasWomen;
     }
 
     @Override
@@ -37,7 +40,8 @@ public class Team {
                 ", name='" + name + '\'' +
                 ", link='" + link + '\'' +
                 ", conferenceId=" + conferenceId +
-                ", isMensTeam=" + isMensTeam +
+                ", hasMen=" + hasMen +
+                ", hasWomen=" + hasWomen +
                 '}';
     }
 
@@ -54,6 +58,9 @@ public class Team {
     }
 
     public void setName(String name) {
+        if (name.contains("WIS.-")){
+            name = name.replace("WIS.-","");
+        }
         this.name = name;
     }
 
@@ -73,11 +80,19 @@ public class Team {
         this.conferenceId = conferenceId;
     }
 
-    public boolean isMensTeam() {
-        return isMensTeam;
+    public boolean isHasMen() {
+        return hasMen;
     }
 
-    public void setMensTeam(boolean mensTeam) {
-        isMensTeam = mensTeam;
+    public void setHasMen(boolean hasMen) {
+        this.hasMen = hasMen;
+    }
+
+    public boolean isHasWomen() {
+        return hasWomen;
+    }
+
+    public void setHasWomen(boolean hasWomen) {
+        this.hasWomen = hasWomen;
     }
 }

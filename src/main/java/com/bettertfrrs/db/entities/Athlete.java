@@ -18,18 +18,18 @@ public class Athlete {
     public Team team;
     @Column
     public String grade;
-//    @Column
-//    public boolean isMensTeam;
+    @Column
+    public Boolean isMan; //1 = man 0 = woman
 
     public Athlete() {
     }
 
-//    public Athlete(String name, String link, Team team, String grade, boolean isMensTeam) {
-    public Athlete(String name, String link, Team team, String grade) {
-            this.name = name;
+    public Athlete(String name, String link, Team team, String grade, Boolean isMan) {
+        this.name = name;
         this.link = link;
         this.team = team;
         this.grade = grade;
+        this.isMan = isMan;
     }
 
     @Override
@@ -40,6 +40,7 @@ public class Athlete {
                 ", link='" + link + '\'' +
                 ", teamId=" + team.name +
                 ", grade='" + grade + '\'' +
+                ", isMan='" + isMan + '\'' +
                 '}';
     }
 
@@ -82,12 +83,12 @@ public class Athlete {
     public void setGrade(String grade) {
         this.grade = grade;
     }
-//
-//    public boolean isMensTeam() {
-//        return isMensTeam;
-//    }
-//
-//    public void setMensTeam(boolean mensTeam) {
-//        isMensTeam = mensTeam;
-//    }
+
+    public Boolean isMan() {
+        return isMan;
+    }
+
+    public void setMan(Boolean man) {
+        isMan = man;
+    }
 }

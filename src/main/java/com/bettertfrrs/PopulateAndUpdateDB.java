@@ -13,6 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +32,12 @@ public class PopulateAndUpdateDB {
     private final TeamScraper teamScraper = new TeamScraper();
     private final AthleteScraper athleteScraper = new AthleteScraper();
     private final BestsScraper bestsScraper;
+
+    // ANSI escape codes for cursor movement
+    final String CLEAR_LINE = "\033[2K";
+    final String MOVE_UP = "\033[1A";
+    // Timer start
+    final long programStart = System.currentTimeMillis();
 
     private final String[] WIACandAmericaRivers = {
             "https://www.tfrrs.org/leagues/1420.html", //WIAC
@@ -65,50 +72,97 @@ public class PopulateAndUpdateDB {
 
     public void run() throws InterruptedException {
         System.out.println("Starting database population...");
-        // ANSI escape codes for cursor movement
-        final String CLEAR_LINE = "\033[2K";
-        final String MOVE_UP = "\033[1A";
 
         // Print four placeholder lines to start
-        System.out.println("Time: ");
         System.out.println("Conference: ");
         System.out.println("Team: ");
         System.out.println("Athlete: ");
+        System.out.println("Time: ");
 
-        // Timer start
-        long programStart = System.currentTimeMillis();
         for (String conferenceLink : WIACandAmericaRivers) {
             Document conferencePage = openHTMLPage(conferenceLink);
             Conference conference = processConference(conferencePage);
+
+            System.out.print(MOVE_UP + CLEAR_LINE);
+            System.out.print(MOVE_UP + CLEAR_LINE);
+            System.out.print(MOVE_UP + CLEAR_LINE);
+            System.out.print(MOVE_UP + CLEAR_LINE);
+            System.out.printf("Conference: %s%n", conference.name);
+
             List<String> teamLinks = getConferencesTeamLinks(conferencePage);
-            for (int i = 0; i < teamLinks.size(); i++) {
+            //Context - If a team has a mens and womens team I want the site to be able to display
+            // Men and Women, Men, Women for either athletes or events. To be able to handle this each team
+            //Will be stored with 2 bools for hasMen and/or hasWomen then each athlete will be set as a man
+            //or woman. Therefore, we want to process teams that have the same name together. Only 1 team will
+            //be made but each team will need to process its athletes.
+            List<String> teamLinksProcessed = new ArrayList<>();
+            int i = 0;
+            while(teamLinks.size() > teamLinksProcessed.size()){
                 String teamLink = teamLinks.get(i);
-                Document teamPage = openHTMLPage(teamLink);
-                Team team = processTeam(teamPage,conference.id);
-                List<String> athleteLinks = getTeamsAthleteLinks(teamPage);
-                for (int j = 0; j < athleteLinks.size(); j++) {
-                    String athleteLink = athleteLinks.get(j);
-                    Document athletePage = openHTMLPage(athleteLink);
-                    Athlete athlete = processAthlete(athletePage,team);
+                if (!teamLinksProcessed.contains(teamLink)){
+                    Document teamPage = openHTMLPage(teamLink);
+                    if (teamPage != null) {
+                        Team teamFromHtml = teamScraper.scrapeTeam(teamPage, conference.id);
+                        String oppositeGenderLink;
+                        if(teamFromHtml.hasMen){
+                            oppositeGenderLink = teamFromHtml.link.replace("_m_","_f_");
+                        }else{
+                            oppositeGenderLink = teamFromHtml.link.replace("_f_","_m_");
+                        }
+                        if (teamLinks.contains(oppositeGenderLink)){
+                            //there are 2 genders for the team
+                            teamFromHtml.hasMen = true;
+                            teamFromHtml.hasWomen = true;
+                        }
+                        //We can add the one team then we want to process the athletes from both
+                        Team team = createOrUpdateTeam(teamFromHtml);
 
-                    // Move up 4 lines and clear them
-                    System.out.print(MOVE_UP + CLEAR_LINE);
-                    System.out.print(MOVE_UP + CLEAR_LINE);
-                    System.out.print(MOVE_UP + CLEAR_LINE);
-                    System.out.print(MOVE_UP + CLEAR_LINE);
+                        // Move up 4 lines and clear them
+                        System.out.print(MOVE_UP + CLEAR_LINE);
+                        System.out.print(MOVE_UP + CLEAR_LINE);
+                        System.out.print(MOVE_UP + CLEAR_LINE);
+                        System.out.printf("Team (%d/%d): %s%n", i + 1, teamLinks.size(), team.name);
 
-                    // Print new info
-                    long elapsed = System.currentTimeMillis() - programStart;
-                    System.out.printf("Time: %.2f seconds%n", elapsed / 1000.0);
-                    System.out.printf("Conference: %s%n", conference.name);
-                    System.out.printf("Team (%d/%d): %s%n", i + 1, teamLinks.size(), team.name);
-                    System.out.printf("Athlete (%d/%d): %s%n", j + 1, athleteLinks.size(), athlete.name);
-
-                    processAthleteBests(athletePage, athlete);
+                        //Process original teamPage we opened
+                        List<String> athleteLinks = getTeamsAthleteLinks(teamPage);
+                        boolean isMan = teamLink.contains("_m_");
+                        processAthleteLinks(athleteLinks,team,isMan);
+                        teamLinksProcessed.add(teamLink);
+                        if (team.hasMen && team.hasWomen){
+                            //If there are both genders process the opposite gender link
+                            isMan = !isMan;
+                            teamPage = openHTMLPage(oppositeGenderLink);
+                            athleteLinks = getTeamsAthleteLinks(teamPage);
+                            processAthleteLinks(athleteLinks,team, isMan);
+                            teamLinksProcessed.add(oppositeGenderLink);
+                        }
+                    }
                 }
+                i++;
             }
         }
         System.out.println("Finished scraping!");
+    }
+
+    private void processAthleteLinks(List<String> athleteLinks, Team team, boolean isMan) throws InterruptedException {
+        for (int j = 0; j < athleteLinks.size(); j++) {
+        String athleteLink = athleteLinks.get(j);
+        Document athletePage = openHTMLPage(athleteLink);
+        Athlete athlete = processAthlete(athletePage,team, isMan);
+
+        System.out.print(MOVE_UP + CLEAR_LINE);
+        System.out.print(MOVE_UP + CLEAR_LINE);
+
+        // Print new info
+        long elapsed = System.currentTimeMillis() - programStart;
+        long seconds = (elapsed / 1000) % 60;
+        long minutes = (elapsed / (1000 * 60)) % 60;
+
+        System.out.printf("Athlete (%d/%d): %s%n", j + 1, athleteLinks.size(), athlete.name);
+        System.out.printf("Time: %d:%02d%n", minutes, seconds);
+
+        processAthleteBests(athletePage, athlete);
+    }
     }
 
     private Document openHTMLPage(String link) throws InterruptedException {
@@ -138,9 +192,7 @@ public class PopulateAndUpdateDB {
         return conferenceScraper.scrapeTeamLinks(conferencePage);
     }
 
-
-    private Team processTeam(Document teamPage, Integer conferenceId) {
-        Team teamFromHtml = teamScraper.scrapeTeam(teamPage, conferenceId);
+    private Team createOrUpdateTeam(Team teamFromHtml) {
         return teamService.createOrUpdate(teamFromHtml);
     }
 
@@ -148,8 +200,9 @@ public class PopulateAndUpdateDB {
         return teamScraper.scrapeAthleteLinks(teamPage);
     }
 
-    private Athlete processAthlete(Document athletePage, Team team) {
+    private Athlete processAthlete(Document athletePage, Team team, boolean isMan) {
         Athlete athleteFromHtml = athleteScraper.scrapeAthlete(athletePage,team);
+        athleteFromHtml.isMan = isMan;
         return athleteService.createOrUpdate(athleteFromHtml);
     }
 

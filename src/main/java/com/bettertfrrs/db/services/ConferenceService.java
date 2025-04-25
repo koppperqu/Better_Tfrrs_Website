@@ -20,11 +20,10 @@ public class ConferenceService {
         return conferenceRepository.findAll();
     }
 
-    // Get a conference by ID
+//     Get a conference by ID
     public Optional<Conference> getConferenceById(int id) {
         return conferenceRepository.findById(id);
     }
-
     // Create a new conference
     public Conference createConference(String name) {
         Conference conference = new Conference();
@@ -44,5 +43,9 @@ public class ConferenceService {
 
     private Conference getConferenceByLink(String link) {
         return conferenceRepository.findByLink(link);
+    }
+
+    public Optional<Conference> getConferenceByName(String conferenceName) {
+        return conferenceRepository.findByName(conferenceName);
     }
 }

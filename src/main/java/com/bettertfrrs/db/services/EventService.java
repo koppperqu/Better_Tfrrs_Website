@@ -33,18 +33,19 @@ public class EventService {
     }
 
     public Event createOrUpdate(Event event) {
-        Event eventInDB = getEventByShortName(event.shortName);
-        if (eventInDB != null) {
-            eventInDB.setShortName(event.shortName);
-            eventInDB.setName(getEventName(eventInDB.shortName));
-            return eventRepository.save(eventInDB);
+        Optional<Event> eventInDB = getEventByShortName(event.shortName);
+        if (eventInDB.isPresent()) {
+            Event e = eventInDB.get();
+            e.setShortName(event.shortName);
+            e.setName(getEventName(e.shortName));
+            return eventRepository.save(e);
         }else {
             event.setName(getEventName(event.shortName));
             return eventRepository.save(event);
         }
     }
 
-    private Event getEventByShortName(String shortName) {
+    public Optional<Event> getEventByShortName(String shortName) {
         return eventRepository.findByShortName(shortName);
     }
 
@@ -57,16 +58,17 @@ public class EventService {
             case "HJ" -> "High Jump";
             case "PV" -> "Pole Vault";
             case "LJ" -> "Long Jump";
+            case "TJ" -> "Triple Jump";
             case "SP" -> "Shot Put";
             case "DT" -> "Discus";
             case "HT" -> "Hammer";
             case "JT" -> "Javelin";
-            case "Dec" -> "Decathlon";
+            case "DEC" -> "Decathlon";
             case "55H" -> "55 Hurdles";
             case "60H" -> "60 Hurdles";
             case "WT" -> "Weight";
-            case "Hep" -> "Heptathlon";
-            case "Pent" -> "Pentathlon";
+            case "HEP" -> "Heptathlon";
+            case "PENT" -> "Pentathlon";
             default -> shortName;
         };
     }

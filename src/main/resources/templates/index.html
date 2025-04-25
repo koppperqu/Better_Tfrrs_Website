@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="base"
-      xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{base :: base(~{::content})}" xmlns:th="http://www.thymeleaf.org">
 <body>
-<div layout:fragment="content">
-    <div class="text-center">
-        <h2 class="col-12 display-4 custom-background p-2 rounded-top">WIAC Colleges</h2>
-        <div class="row justify-content-center">
-            <div class="col-4 col-md-3 m-1 p-0" th:each="teamDTO : ${globalLinks}">
-                <a class = "text-decoration-none" th:href="'/'+ ${teamDTO.teamLink}">
-                    <h3 class = "alt-custom-background rounded p-1 w-100" th:text="${teamDTO.name}"></h3>
-                </a>
+    <div th:fragment="content">
+        <div class="text-center">
+            <h2 class="col-12 display-4 custom-background p-2 rounded-top">Conferences</h2>
+            <div class="row justify-content-center">
+                <div class="col-4 col-md-3 m-1 p-0" th:each="name, eachStatus : ${conferencesDTO.names}">
+                    <a class = "text-decoration-none" th:href="${conferencesDTO.conferenceURLs[eachStatus.index]}">
+                        <h3 class = "alt-custom-background rounded p-1 w-100 h-100 d-flex justify-content-center align-items-center text-center" th:text="${name}"></h3>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
 </html>
 

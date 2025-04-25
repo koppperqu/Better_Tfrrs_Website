@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +34,7 @@ public class AthleteController {
         this.bestService = bestService;
     }
 
-    @GetMapping("/{teamId}/athletes")
+    @GetMapping("/athletes/{encodedConferenceName}/{encodedTeamName}")
     public String athletesForTeam(@PathVariable int teamId, @RequestParam(required = false) Boolean isMensTeam, Model model) throws UnsupportedEncodingException {
 //        List<AthleteDTO> athleteDTOs = athleteService.getAthletesByTeamId(teamId, isMensTeam);
 //        Optional<Team> team = teamService.getTeamById(teamId);
@@ -47,7 +49,7 @@ public class AthleteController {
         return null;
     }
 
-    @GetMapping("/{teamId}/athletes/{athleteId}")
+    @GetMapping("/athletes/{encodedConferenceName}/{encodedTeamName}/{encodedAthleteName}")
     public String bestsForAthlete(@PathVariable int teamId, @PathVariable int athleteId, Model model) {
         Optional<Athlete> athlete = athleteService.getAthleteById(athleteId);
         Optional<Team> team = teamService.getTeamById(teamId);
@@ -59,7 +61,12 @@ public class AthleteController {
             return "athleteBests";
         }
         else {
-            return "redirect:/error";
+            return "404";
         }
+    }
+
+    private String urlDecoder(String s){
+        s = URLDecoder.decode(s, Charset.defaultCharset());
+        return s;
     }
 }
