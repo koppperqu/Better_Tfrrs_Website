@@ -16,10 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.sql.SQLException;
 import java.util.*;
 
 @Controller
@@ -46,7 +44,7 @@ public class EventController {
         if (conference.isPresent() && team.isPresent()) {
             Team t = team.get();
             Conference c = conference.get();
-            Optional<List<Event>> events = Optional.empty();;
+            Optional<List<Event>> events = Optional.empty();
             if (isMensTeam == null){
                 events = bestService.getDistinctEventsForTeam(t.id);
             }else if (isMensTeam.equals("0")){
@@ -63,7 +61,7 @@ public class EventController {
                 return "eventsForTeam";
             }
         }
-        return "error";
+        return "404";
     }
 
     @GetMapping("/events/{encodedConferenceName}/{encodedTeamName}/{encodedEventName}")
@@ -95,7 +93,7 @@ public class EventController {
                 return "eventBests";
             }
         }
-        return "error";
+        return "404";
     }
 
     private String urlDecoder(String s){

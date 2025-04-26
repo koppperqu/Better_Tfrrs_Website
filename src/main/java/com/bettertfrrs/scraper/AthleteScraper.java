@@ -14,8 +14,19 @@ public class AthleteScraper {
         //The format expected here is "GAGE STANKIEWICZ (JR-3)"
         int openParen = athleteHeaderText.indexOf("(");
         int closeParen = athleteHeaderText.indexOf(")");
-        athlete.name = athleteHeaderText.substring(0,openParen).trim();
+        athlete.setName(scrapeAthleteName(athletePage));
         athlete.grade =athleteHeaderText.substring(openParen+1,closeParen).trim();
         return athlete;
+    }
+
+    private String scrapeAthleteName(Document athletePage) {
+        //https://www.tfrrs.org/athletes/8706314/Wis_Eau_Claire/McKenzie_Kruse.html
+        String athleteLink = athletePage.location();
+        int pos1 = athleteLink.lastIndexOf("/");
+        int pos2 = athleteLink.lastIndexOf(".html");
+        if (pos1 == -1 || pos2 == -1){
+            throw new IllegalArgumentException("Unable to extract team name due to link format: " + athleteLink);
+        }
+        return athleteLink.substring(pos1+1,pos2).replace("_"," ");
     }
 }

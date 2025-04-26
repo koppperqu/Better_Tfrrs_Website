@@ -1,10 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="base"
-      xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{base :: base(~{::content})}" xmlns:th="http://www.thymeleaf.org">
 <body>
-<div layout:fragment="content">
+<div th:fragment="content">
     <div class="text-center">
         <div class="custom-background rounded-top">
             <h3 class="col-12 display-3 p-2 pb-0 mb-0" th:text="${teamName}"></h3>
@@ -15,8 +12,8 @@
         </div>
         <div id="athlete-container" class="row justify-content-center">
             <div id="no-matching-athletes"></div>
-            <div class="athlete col-4 col-md-2 p-1 m-1" th:each = "athleteDTO : ${athleteDTOS}">
-                <a class = "btn custom-btn w-100 h-100" th:href="${athleteDTO.athleteURL}" th:text = "${athleteDTO.athleteName}"></a>
+            <div class="athlete col-4 col-md-2 p-1 m-1" th:each = "athleteName, eachStatus : ${athletesDTO.athleteNames}">
+                <a class = "btn custom-btn w-100 h-100" th:href="${athletesDTO.athleteURLs[eachStatus.index]}" th:text = "${athleteName}"></a>
             </div>
         </div>
     </div>

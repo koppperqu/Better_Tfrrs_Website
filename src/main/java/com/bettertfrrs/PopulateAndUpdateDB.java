@@ -24,7 +24,6 @@ public class PopulateAndUpdateDB {
     private final  AthleteService athleteService;
     private final  BestService bestService;
     private final  ConferenceService conferenceService;
-    private final  EventService eventService;
     private final  TeamService teamService;
 
 //    private final RegionScraper regionScraper = new RegionScraper();
@@ -64,9 +63,7 @@ public class PopulateAndUpdateDB {
         this.athleteService = athleteService;
         this.bestService = bestService;
         this.conferenceService = conferenceService;
-        this.eventService = eventService;
         this.teamService = teamService;
-
         this.bestsScraper = new BestsScraper(eventService);
     }
 
@@ -102,7 +99,7 @@ public class PopulateAndUpdateDB {
                 if (!teamLinksProcessed.contains(teamLink)){
                     Document teamPage = openHTMLPage(teamLink);
                     if (teamPage != null) {
-                        Team teamFromHtml = teamScraper.scrapeTeam(teamPage, conference.id);
+                        Team teamFromHtml = teamScraper.scrapeTeam(teamPage, conference);
                         String oppositeGenderLink;
                         if(teamFromHtml.hasMen){
                             oppositeGenderLink = teamFromHtml.link.replace("_m_","_f_");

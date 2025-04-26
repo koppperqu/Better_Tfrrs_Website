@@ -13,8 +13,11 @@ public class Team {
     public String name;
     @Column(unique = true)
     public String link;
-    @Column
-    public int conferenceId;
+//    @Column
+//    public int conferenceId;
+    @ManyToOne
+    @JoinColumn(name = "conferenceId", referencedColumnName = "id")
+    public Conference conference;
     @Column
     public boolean hasMen;
     @Column
@@ -23,12 +26,12 @@ public class Team {
     public Team() {
     }
 
-    public Team(int id, String name, String link, int conferenceId, boolean hasMen, boolean hasWomen) {
+    public Team(int id, String name, String link, Conference conference, boolean hasMen, boolean hasWomen) {
 //    public Team(int id, String name, String link, int conferenceId) {
         this.id = id;
         this.name = name;
         this.link = link;
-        this.conferenceId = conferenceId;
+        this.conference = conference;
         this.hasMen = hasMen;
         this.hasWomen = hasWomen;
     }
@@ -39,7 +42,7 @@ public class Team {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", link='" + link + '\'' +
-                ", conferenceId=" + conferenceId +
+                ", conference=" + conference.name +
                 ", hasMen=" + hasMen +
                 ", hasWomen=" + hasWomen +
                 '}';
@@ -58,8 +61,8 @@ public class Team {
     }
 
     public void setName(String name) {
-        if (name.contains("WIS.-")){
-            name = name.replace("WIS.-","");
+        if (name.contains("Wis ")){
+            name = name.replace("Wis ","");
         }
         this.name = name;
     }
@@ -72,13 +75,13 @@ public class Team {
         this.link = link;
     }
 
-    public int getConferenceId() {
-        return conferenceId;
-    }
-
-    public void setConferenceId(int conferenceId) {
-        this.conferenceId = conferenceId;
-    }
+//    public int getConferenceId() {
+//        return conferenceId;
+//    }
+//
+//    public void setConferenceId(int conferenceId) {
+//        this.conferenceId = conferenceId;
+//    }
 
     public boolean isHasMen() {
         return hasMen;
@@ -94,5 +97,13 @@ public class Team {
 
     public void setHasWomen(boolean hasWomen) {
         this.hasWomen = hasWomen;
+    }
+
+    public Conference getConference() {
+        return conference;
+    }
+
+    public void setConference(Conference conference) {
+        this.conference = conference;
     }
 }

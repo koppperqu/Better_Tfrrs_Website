@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface BestRepository extends JpaRepository<Best, BestId> {
 
-    List<Best> findByAthleteId(Integer athleteId);
+    Optional<List<Best>> findByAthleteId(Integer athleteId);
 
     Best findByAthleteIdAndEventId(Integer athleteId, Integer eventId);
 

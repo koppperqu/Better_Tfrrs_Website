@@ -15,28 +15,11 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    // Get all teams
-    public List<Team> getAllTeams() {
-        return teamRepository.findAll();
-    }
-
-    // Get a team by ID
-    public Optional<Team> getTeamById(int id) {
-        return teamRepository.findById(id);
-    }
-
-    // Create a new team
-    public Team createTeam(String name) {
-        Team team = new Team();
-        team.setName(name);
-        return teamRepository.save(team);
-    }
-
     public Team createOrUpdate(Team team) {
         Team teamInDB = getTeamByLink(team.link);
         if (teamInDB != null) {
             teamInDB.setName(team.name);
-            teamInDB.setConferenceId(team.conferenceId);
+            teamInDB.setConference(team.conference);
             teamInDB.setHasMen(team.hasMen);
             return teamRepository.save(teamInDB);
         }else {

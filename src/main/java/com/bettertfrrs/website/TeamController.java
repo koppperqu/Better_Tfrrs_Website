@@ -32,7 +32,7 @@ public class TeamController {
     }
 
     @GetMapping("/team/{encodedConferenceName}/{encodedTeamName}")
-    public String teamPage(@PathVariable String encodedConferenceName,@PathVariable String encodedTeamName, Model model) throws SQLException, UnsupportedEncodingException {
+    public String teamPage(@PathVariable String encodedConferenceName,@PathVariable String encodedTeamName, Model model) {
         String teamName = urlDecoder(encodedTeamName);
         Optional<Team> team = teamService.getTeamByName(teamName);
         if (team.isPresent()){
@@ -51,12 +51,12 @@ public class TeamController {
         teamName = teamName.toLowerCase();
             //FileReader reader = new FileReader(last2WeeksPrsJsonPath+teamName+"_recentrPRs.json");
         ObjectMapper objectMapper = new ObjectMapper();
-        List<MeetDTO> meetDTOS;
+        List<MeetDTO> meetDTOS = List.of();
         try {
             meetDTOS = objectMapper.readValue(new File(last2WeeksPrsJsonPath+teamName+"_recentrPRs.json"), new TypeReference<List<MeetDTO>>() {});
         } catch (IOException e) {
-            meetDTOS = List.of();
-            e.printStackTrace();
+            //meetDTOS = List.of();
+            //e.printStackTrace();
         }
         return meetDTOS;
     }
