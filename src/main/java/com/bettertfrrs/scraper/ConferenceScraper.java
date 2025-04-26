@@ -24,16 +24,23 @@ public class ConferenceScraper {
         //We are assuming that there will be teams on each conference page, if not we want
         //to break.
         Element teamsHeader = conferencePage.selectFirst("h3:contains(TEAMS)");
+        assert teamsHeader != null;
         Element teamsDIV = teamsHeader.parent();
+        assert teamsDIV != null;
         Element teamsTbody = teamsDIV.selectFirst("tbody");
+        assert teamsTbody != null;
         Elements teamsRows = teamsTbody.select("tr");
         List<String> teamUrls = new ArrayList<>();
         for (Element row : teamsRows){
             Elements tds = row.select("td");
-                String mensLink = tds.get(0).selectFirst("a").attr("href");
-                teamUrls.add(mensLink);
-                String womensLink = tds.get(1).selectFirst("a").attr("href");
-                teamUrls.add(womensLink);
+            Element a1 = tds.getFirst().selectFirst("a");
+            assert a1 != null;
+            String mensLink = a1.attr("href");
+            teamUrls.add(mensLink);
+            Element a2 = tds.get(1).selectFirst("a");
+            assert a2 != null;
+            String womensLink = a2.attr("href");
+            teamUrls.add(womensLink);
         }
         return teamUrls;
     }

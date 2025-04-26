@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.nio.charset.Charset;
-import java.sql.SQLException;
 import java.util.*;
 
 @Controller

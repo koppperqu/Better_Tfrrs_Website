@@ -35,6 +35,7 @@ public class PopulateAndUpdateDB {
     // ANSI escape codes for cursor movement
     final String CLEAR_LINE = "\033[2K";
     final String MOVE_UP = "\033[1A";
+    final String MOVE_DOWN = "\033[3B";
     // Timer start
     final long programStart = System.currentTimeMillis();
 
@@ -80,11 +81,8 @@ public class PopulateAndUpdateDB {
             Document conferencePage = openHTMLPage(conferenceLink);
             Conference conference = processConference(conferencePage);
 
-            System.out.print(MOVE_UP + CLEAR_LINE);
-            System.out.print(MOVE_UP + CLEAR_LINE);
-            System.out.print(MOVE_UP + CLEAR_LINE);
-            System.out.print(MOVE_UP + CLEAR_LINE);
-            System.out.printf("Conference: %s%n", conference.name);
+            System.out.print(MOVE_UP + MOVE_UP + MOVE_UP + MOVE_UP + CLEAR_LINE);
+            System.out.printf("Conference: %s%n" + MOVE_DOWN + MOVE_DOWN + MOVE_DOWN + MOVE_DOWN, conference.name);
 
             List<String> teamLinks = getConferencesTeamLinks(conferencePage);
             //Context - If a team has a mens and womens team I want the site to be able to display
@@ -115,10 +113,8 @@ public class PopulateAndUpdateDB {
                         Team team = createOrUpdateTeam(teamFromHtml);
 
                         // Move up 4 lines and clear them
-                        System.out.print(MOVE_UP + CLEAR_LINE);
-                        System.out.print(MOVE_UP + CLEAR_LINE);
-                        System.out.print(MOVE_UP + CLEAR_LINE);
-                        System.out.printf("Team (%d/%d): %s%n", i + 1, teamLinks.size(), team.name);
+                        System.out.print(MOVE_UP + MOVE_UP + MOVE_UP + CLEAR_LINE);
+                        System.out.printf("Team (%d/%d): %s%n" + MOVE_DOWN + MOVE_DOWN + MOVE_DOWN, i + 1, teamLinks.size(), team.name);
 
                         //Process original teamPage we opened
                         List<String> athleteLinks = getTeamsAthleteLinks(teamPage);
