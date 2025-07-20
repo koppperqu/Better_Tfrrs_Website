@@ -160,19 +160,19 @@ public class PopulateAndUpdateDB {
 
     private Document openHTMLPage(String link) throws InterruptedException {
         for (int i = 0; i < 5; i++){
-            int delay;
-            if (i==0) {
-                delay = 0;
-            }else{
-                delay = (int) (Math.pow(2, i-1) * 5);
-            }
-            //0 then 5 then 10 then 20 then 40
-            TimeUnit.SECONDS.sleep(delay);
             try{
                 return Jsoup.connect(link).get();
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                if (i==4) {
+                    System.out.println(e.getMessage());
+                    System.exit(1);
+                }
             }
+            int delay = (int) (Math.pow(2, i) * 10);
+            //10, 20, 40, 80
+            TimeUnit.SECONDS.sleep(delay);
         }
+        System.out.println("Should not be here something wrong in code :(");
         return null;
     }
 
