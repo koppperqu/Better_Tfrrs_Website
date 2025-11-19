@@ -27,6 +27,7 @@ public class AthleteScraper {
         if (pos1 == -1 || pos2 == -1){
             throw new IllegalArgumentException("Unable to extract team name due to link format: " + athleteLink);
         }
-        return athleteLink.substring(pos1+1,pos2).replace("_"," ");
+        //Replaces all _'s with single space. Sometimes there is more than one __ or ___ this should handle those aswell.
+        return athleteLink.substring(pos1+1,pos2).replaceAll("_+"," ");
     }
 }

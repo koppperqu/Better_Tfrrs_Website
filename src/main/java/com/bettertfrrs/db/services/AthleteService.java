@@ -18,12 +18,19 @@ public class AthleteService {
     }
 
     public Athlete createOrUpdate(Athlete athlete) {
-        Athlete athleteInDB = getAthleteByLink(athlete.link);
-        if (athleteInDB != null) {
-            athleteInDB.setName(athlete.name);
-            athleteInDB.setTeam(athlete.team);
-            athleteInDB.setGrade(athlete.grade);
-            return athleteRepository.save(athleteInDB);
+        //After running for a while sometimes TFRRS changes the link to an athlete,
+        //due to this we need to change how we identify if we are updating or
+        //adding an athlete. One reason we didnt use the name is TFRRS likes to
+        //add random spaces which can also lead to an athlete being entered twice.
+        //Going forward we will use name and team to identify athlete and do our
+        //best to process the name to prevent duplicates.
+        //Athlete athleteInDB = getAthleteByLink(athlete.link);
+        Optional<Athlete> athleteInDB = getAthleteByNameAndTeam(athlete.name,athlete.team.id);
+        if (athleteInDB.isPresent()) {
+            athleteInDB.get().setName(athlete.name);
+            athleteInDB.get().setTeam(athlete.team);
+            athleteInDB.get().setGrade(athlete.grade);
+            return athleteRepository.save(athleteInDB.get());
         }else {
             return athleteRepository.save(athlete);
         }
