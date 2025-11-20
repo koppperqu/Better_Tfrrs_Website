@@ -23,7 +23,7 @@ public class EventBestsDTO {
             athleteNames.add(best.athlete.name);
             tfrrsBestLinks.add(best.link);
             String encodedAthleteName = urlEncoder(best.athlete.name);
-            athleteURLs.add("/athletes/" + encodedConferenceName + "/" + encodedTeamName + "/" + encodedAthleteName);
+            athleteURLs.add("/athletes/" + encodedConferenceName + "/" + encodedTeamName + "/" + encodedAthleteName+"/"+best.athlete.id);
         }
     }
 

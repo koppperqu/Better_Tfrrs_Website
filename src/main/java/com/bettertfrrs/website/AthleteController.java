@@ -66,8 +66,8 @@ public class AthleteController {
         return "404";
     }
 
-    @GetMapping("/athletes/{encodedConferenceName}/{encodedTeamName}/{encodedAthleteName}")
-    public String bestsForAthlete(@PathVariable String encodedConferenceName, @PathVariable String encodedTeamName, @PathVariable String encodedAthleteName, Model model) {
+    @GetMapping("/athletes/{encodedConferenceName}/{encodedTeamName}/{encodedAthleteName}/{athleteID}")
+    public String bestsForAthlete(@PathVariable String encodedConferenceName, @PathVariable String encodedTeamName, @PathVariable String encodedAthleteName, @PathVariable int athleteID, Model model) {
         String conferenceName = urlDecoder(encodedConferenceName);
         Optional<Conference> conference = conferenceService.getConferenceByName(conferenceName);
         String teamName = urlDecoder(encodedTeamName);
@@ -75,8 +75,12 @@ public class AthleteController {
         if (team.isPresent() && conference.isPresent()){
             Team t = team.get();
             Conference c = conference.get();
-            String athleteName = urlDecoder(encodedAthleteName);
-            Optional<Athlete> athlete = athleteService.getAthleteByNameAndTeam(athleteName,t.id);
+        //    String athleteName = urlDecoder(encodedAthleteName);
+        //    Optional<Athlete> athlete = athleteService.getAthleteByNameAndTeam(athleteName,t.id);
+        //Due to a change in how athlete links are provided in the website we can use the id to get the
+        //correct athlete. Orignaly want to avoid this because the URL was cleaner. Due to some athletes being
+        //duplicates on a team or across a conference we need to use ID.
+            Optional<Athlete> athlete = athleteService.getAthleteById(athleteID);
             if (athlete.isPresent()) {
                 Athlete a = athlete.get();
                 Optional<List<Best>> bests = bestService.getBestsByAthleteId(a.id);

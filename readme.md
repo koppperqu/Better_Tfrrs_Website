@@ -12,6 +12,8 @@ Working on this project on and off for about 4 years taught me a lot about pytho
 
 Technical
 
+To build run 
+
 Java 24
 
 BetterTfrrsWebsite.jar

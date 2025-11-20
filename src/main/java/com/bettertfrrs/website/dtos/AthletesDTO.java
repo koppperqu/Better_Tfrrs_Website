@@ -16,7 +16,10 @@ public class AthletesDTO {
     public AthletesDTO(List<Athlete> athletes, Conference conference) {
         for (Athlete athlete : athletes){
             athleteNames.add(athlete.name);
-            athleteURLs.add("/athletes/"+urlEncoder(conference.name)+"/"+urlEncoder(athlete.team.name)+"/"+urlEncoder(athlete.name));
+            //Discovered some team have atheltes with the same name, due to this we need to add the id into the URL so
+            //we are able to accuratly return the correct athlete.
+            athleteURLs.add("/athletes/"+urlEncoder(conference.name)+"/"+urlEncoder(athlete.team.name)+"/"+urlEncoder(athlete.name)+"/"+athlete.id);
+            //athleteURLs.add("/athletes/"+urlEncoder(conference.name)+"/"+urlEncoder(athlete.team.name)+"/"+urlEncoder(athlete.name));
         }
     }
 

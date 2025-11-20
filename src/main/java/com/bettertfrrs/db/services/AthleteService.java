@@ -18,19 +18,16 @@ public class AthleteService {
     }
 
     public Athlete createOrUpdate(Athlete athlete) {
-        //After running for a while sometimes TFRRS changes the link to an athlete,
-        //due to this we need to change how we identify if we are updating or
-        //adding an athlete. One reason we didnt use the name is TFRRS likes to
-        //add random spaces which can also lead to an athlete being entered twice.
-        //Going forward we will use name and team to identify athlete and do our
-        //best to process the name to prevent duplicates.
-        //Athlete athleteInDB = getAthleteByLink(athlete.link);
-        Optional<Athlete> athleteInDB = getAthleteByNameAndTeam(athlete.name,athlete.team.id);
-        if (athleteInDB.isPresent()) {
-            athleteInDB.get().setName(athlete.name);
-            athleteInDB.get().setTeam(athlete.team);
-            athleteInDB.get().setGrade(athlete.grade);
-            return athleteRepository.save(athleteInDB.get());
+
+        Athlete athleteInDB = getAthleteByLink(athlete.link);
+        //Optional<Athlete> athleteInDB = getAthleteByNameAndTeam(athlete.name,athlete.team.id);
+        //further research showed that teams literally have 2 people with the same name
+        //correct solution is to change how we query from the website.
+        if (athleteInDB != null) {
+            athleteInDB.setName(athlete.name);
+            athleteInDB.setTeam(athlete.team);
+            athleteInDB.setGrade(athlete.grade);
+            return athleteRepository.save(athleteInDB);
         }else {
             return athleteRepository.save(athlete);
         }
@@ -50,5 +47,9 @@ public class AthleteService {
 
     public Optional<Athlete> getAthleteByNameAndTeam(String athleteName, int id) {
         return athleteRepository.findByNameAndTeamId(athleteName,id);
+    }
+
+    public Optional<Athlete> getAthleteById(int athleteID) {
+        return athleteRepository.findById(athleteID);
     }
 }
