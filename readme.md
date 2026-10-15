@@ -6,7 +6,7 @@ A DIII track & field stats aggregator. Scrapes TFRRS for conference, team, athle
 |---|---|---|
 | ![Home page](docs/screenshots/HomePage.png) | ![WIAC conference page](docs/screenshots/WIACPage.png) | ![Stevens Point team page](docs/screenshots/StevensPointsPage.png) |
 
-| Event | Team Atheltes + athlete search |
+| Event | Team Athletes + athlete search |
 |---|---|
 | ![Shot put results](docs/screenshots/ShotputMenAndWomenFull.png) | ![Athlete search](docs/screenshots/AthleteMenAndWomenSearch.png) |
 
